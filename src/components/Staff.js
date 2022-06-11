@@ -11,7 +11,7 @@ class Staff extends Component {
 
   render() {
     return (
-      <div className="my-2">
+      <div className="col-lg-4 col-md-6 col-sm-12 my-1">
         <Card>{this.props.staffObject.name}</Card>
       </div>
     );

@@ -21,11 +21,7 @@ class StaffList extends Component {
   }
 
   render() {
-    return (
-      <section className="row">
-        <div className="col-12">{this.renderStaff()}</div>
-      </section>
-    );
+    return <section className="row ">{this.renderStaff()}</section>;
   }
 }
 
