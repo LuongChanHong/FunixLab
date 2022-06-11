@@ -8,6 +8,7 @@ import {
   CardText,
   CardTitle,
 } from "reactstrap";
+import DishDetail from "./DishDetail";
 
 class Menu extends Component {
   constructor(props) {
@@ -17,10 +18,12 @@ class Menu extends Component {
     };
   }
 
+  // Sửa lại dish được click (selectedDish) trong state
   handleDishSelected(dish) {
     this.setState({ selectedDish: dish });
   }
 
+  // Render ra các thành phần của 1 dish item
   renderDish(dish) {
     if (dish != null) {
       return (
@@ -38,6 +41,7 @@ class Menu extends Component {
   }
 
   render() {
+    // Render ra HTML của các dist trong list
     let menu = this.props.dishes.map((dish) => {
       return (
         <div key={dish.id} className="col-12 col-md-5 m-1">
@@ -54,7 +58,10 @@ class Menu extends Component {
     return (
       <section className="container">
         <div className="row">{menu}</div>
-        <div className="row">{this.renderDish(this.state.selectedDish)}</div>
+        <DishDetail
+          selectedDish={this.state.selectedDish}
+          renderDish={this.renderDish}
+        />
       </section>
     );
   }
