@@ -1,63 +1,60 @@
 import React, { Component } from "react";
-import { Media } from "reactstrap";
+import {
+  Media,
+  Card,
+  CardImg,
+  CardImgOverlay,
+  CardBody,
+  CardText,
+  CardTitle,
+} from "reactstrap";
 
 class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dishes: [
-        {
-          id: 0,
-          name: "uthappizza",
-          image: "assets/images/uthappizza.png",
-          category: "main",
-          label: "hot",
-          price: "4",
-          text: "uthappizza",
-        },
-        {
-          id: 1,
-          name: "vadonut",
-          image: "assets/images/vadonut.png",
-          category: "main",
-          label: "hot",
-          price: "4",
-          text: "vadonut",
-        },
-        {
-          id: 2,
-          name: "elaicheesecake",
-          image: "assets/images/elaicheesecake.png",
-          category: "main",
-          label: "hot",
-          price: "4",
-          text: "elaicheesecake",
-        },
-      ],
+      selectedDish: null,
     };
   }
 
-  render() {
-    let menu = this.state.dishes.map((dish) => {
+  handleDishSelected(dish) {
+    this.setState({ selectedDish: dish });
+  }
+
+  renderDish(dish) {
+    if (dish != null) {
       return (
-        <div key={dish.id} className="col-12 my-3">
-          <Media tag="li">
-            <Media left middle>
-              <Media object src={dish.image} alt={dish.name}></Media>
-            </Media>
-            <Media body className="">
-              <Media heading>{dish.name}</Media>
-              <p>{dish.text}</p>
-            </Media>
-          </Media>
+        <Card>
+          <CardImg width="100%" src={dish.image} alt={dish.name} />
+          <CardBody>
+            <CardTitle>{dish.name}</CardTitle>
+            <CardText>{dish.description}</CardText>
+          </CardBody>
+        </Card>
+      );
+    } else {
+      return <h1>No dish selected</h1>;
+    }
+  }
+
+  render() {
+    let menu = this.props.dishes.map((dish) => {
+      return (
+        <div key={dish.id} className="col-12 col-md-5 m-1">
+          <Card onClick={() => this.handleDishSelected(dish)}>
+            <CardImg width="100%" object src={dish.image} alt={dish.name} />
+            <CardImgOverlay>
+              <CardTitle>{dish.name}</CardTitle>
+            </CardImgOverlay>
+          </Card>
         </div>
       );
     });
+
     return (
       <section className="container">
-        <div className="row">
-          <Media list>{menu}</Media>
-        </div>
+        <div className="row">{menu}</div>
+        <div className="row">{this.renderDish(this.state.selectedDish)}</div>
       </section>
     );
   }
