@@ -1,0 +1,15 @@
+:root {
+  --gray: #e7e9eb;
+  --dark_blue: #1d2a35;
+}
+
+.appBody {
+  background-color: var(--gray);
+  width: 100vw;
+  height: 100vh;
+}
+
+.menuBody {
+  background-color: var(--dark_blue);
+  color: var(--gray);
+}

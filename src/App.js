@@ -1,23 +1,33 @@
 // import logo from "./logo.svg";
-// import "./App.css";
-import React, { Component } from "react";
-import { Navbar, NavbarBrand } from "reactstrap";
 
-import Menu from "./components/Menu";
-import { DISHES } from "./shared/dishes.js";
+// RJS101x_Assignment1_honglcfx16049@funix.edu.vn
+
+import "./style/style.css";
+import React, { Component } from "react";
+
+import { STAFFS, ROLE, DEPARTMENTS } from "./shared/staffs";
+import Menu from "./components/Menu.js";
+import StaffList from "./components/StaffList";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dishes: DISHES,
+      staffList: STAFFS,
+      roleList: ROLE,
+      departmentList: DEPARTMENTS,
     };
   }
 
   render() {
     return (
-      <div className="">
-        <Menu dishes={this.state.dishes} />
+      <div className="container appBody">
+        <Menu />
+        <StaffList
+          staffList={this.state.staffList}
+          roleList={this.state.roleList}
+          departmentList={this.state.departmentList}
+        />
       </div>
     );
   }
