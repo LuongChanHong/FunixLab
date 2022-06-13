@@ -25,7 +25,16 @@ class StaffList extends Component {
       return (
         <div className="col-12 my-3">
           <Card>
-            <h5>{staff.name}</h5>
+            <CardBody>
+              <CardTitle>
+                <h5>{staff.name}</h5>
+              </CardTitle>
+              <CardText>Ngày sinh:</CardText>
+              <CardText>Ngày vào công ty:</CardText>
+              <CardText>Phòng ban: </CardText>
+              <CardText>Số ngày nghỉ còn lại: {staff.annualLeave}</CardText>
+              <CardText>Số ngày đã làm thêm: {staff.overTime}</CardText>
+            </CardBody>
           </Card>
         </div>
       );
