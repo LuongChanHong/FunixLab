@@ -74,6 +74,22 @@ class StaffList extends Component {
     return staffListHTML;
   }
 
+  changeColumnNumber() {
+    let colNum = document.getElementById("column_input");
+    const warning = document.querySelector(".warningText");
+
+    if (colNum.value > 4) {
+      colNum.value = 4;
+      warning.classList.remove("hidden");
+    } else if (colNum.value < 2) {
+      colNum.value = 2;
+      warning.classList.remove("hidden");
+    } else {
+      this.setState({ column: colNum.value });
+      warning.classList.add("hidden");
+    }
+  }
+
   render() {
     // console.log("render");
     return (
@@ -87,6 +103,7 @@ class StaffList extends Component {
               type="number"
               className="border-0 mx-2"
               defaultValue={this.state.column}
+              onInput={() => this.changeColumnNumber()}
             />
           </form>
         </div>
