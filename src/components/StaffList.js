@@ -19,10 +19,12 @@ class StaffList extends Component {
     };
   }
 
+  // Set lại selectedStaff cho state
   selectStaff(staff) {
     this.setState({ selectedStaff: staff });
   }
 
+  // Render HTML cho staff detail component
   renderStaffDetail(staff) {
     if (staff != null) {
       return (
@@ -50,7 +52,7 @@ class StaffList extends Component {
     }
   }
 
-  // col-lg-4 col-md-6 col-sm-12
+  // Render staff list
   renderStaff() {
     let staffListHTML = this.state.staffList.map((staff) => {
       return (
@@ -74,6 +76,8 @@ class StaffList extends Component {
     return staffListHTML;
   }
 
+  // Xử lí column input người dùng nhập,
+  // hiện thông báo nếu input không hợp lệ
   changeColumnNumber() {
     let colNum = document.getElementById("column_input");
     const warning = document.querySelector(".warningText");
@@ -91,10 +95,11 @@ class StaffList extends Component {
   }
 
   render() {
-    // console.log("render");
     return (
       <section>
+        {/* Danh sách staff */}
         <div className="row">{this.renderStaff()}</div>
+        {/* Input nhập số cột */}
         <div className="row my-3">
           <form className="col-12">
             <label>column input: </label>
@@ -110,6 +115,7 @@ class StaffList extends Component {
             </label>
           </form>
         </div>
+        {/* Staff detail */}
         <div className="row">
           {this.renderStaffDetail(this.state.selectedStaff)}
         </div>
