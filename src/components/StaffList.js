@@ -105,6 +105,9 @@ class StaffList extends Component {
               defaultValue={this.state.column}
               onInput={() => this.changeColumnNumber()}
             />
+            <label className="warningText hidden text-danger">
+              column number must not be {"<"} 2 or {">"} 4
+            </label>
           </form>
         </div>
         <div className="row">
