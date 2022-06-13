@@ -3,6 +3,10 @@
   --dark_blue: #1d2a35;
 }
 
+.hidden {
+  display: none;
+}
+
 .appBody {
   background-color: var(--gray);
   width: 100vw;
@@ -10,6 +14,20 @@
 }
 
 .menuBody {
+  background-color: var(--dark_blue);
+  color: var(--gray);
+}
+
+#column_input {
+  width: 3rem;
+}
+
+.pointer {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.pointer:hover {
   background-color: var(--dark_blue);
   color: var(--gray);
 }

@@ -7,12 +7,15 @@ import { Card, CardTitle, CardBody, CardText } from "reactstrap";
 
 class StaffList extends Component {
   constructor(props) {
+    // console.log("constructor");
     super(props);
     this.state = {
       staffList: this.props.staffList,
       roleList: this.props.roleList,
       department: this.props.departmentList,
       selectedStaff: null,
+      gitColumnTotal: 12,
+      column: 2,
     };
   }
 
@@ -47,14 +50,21 @@ class StaffList extends Component {
     }
   }
 
+  // col-lg-4 col-md-6 col-sm-12
   renderStaff() {
     let staffListHTML = this.state.staffList.map((staff) => {
       return (
-        <div key={staff.id} className="col-lg-4 col-md-6 col-sm-12 my-1">
+        <div
+          key={staff.id}
+          className={`col-${Math.trunc(
+            this.state.gitColumnTotal / this.state.column
+          )}  my-1`}
+        >
           <Card
             onClick={() => {
               this.selectStaff(staff);
             }}
+            className="text-center p-1 pointer"
           >
             {staff.name}
           </Card>
@@ -65,9 +75,21 @@ class StaffList extends Component {
   }
 
   render() {
+    // console.log("render");
     return (
       <section>
         <div className="row">{this.renderStaff()}</div>
+        <div className="row my-3">
+          <form className="col-12">
+            <label>column input: </label>
+            <input
+              id="column_input"
+              type="number"
+              className="border-0 mx-2"
+              defaultValue={this.state.column}
+            />
+          </form>
+        </div>
         <div className="row">
           {this.renderStaffDetail(this.state.selectedStaff)}
         </div>
