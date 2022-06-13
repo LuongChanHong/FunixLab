@@ -21,13 +21,15 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container appBody">
+      <div>
         <Menu />
-        <StaffList
-          staffList={this.state.staffList}
-          roleList={this.state.roleList}
-          departmentList={this.state.departmentList}
-        />
+        <div className="container">
+          <StaffList
+            staffList={this.state.staffList}
+            roleList={this.state.roleList}
+            departmentList={this.state.departmentList}
+          />
+        </div>
       </div>
     );
   }
