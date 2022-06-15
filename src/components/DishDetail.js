@@ -9,8 +9,8 @@ import {
   CardTitle,
 } from "reactstrap";
 
-function RenderComment(dishItem) {
-  let comments = dishItem.comments.map((cmt) => {
+function renderComment(dish) {
+  return dish.comments?.map((cmt) => {
     return (
       <div key={cmt.id} className="my-2">
         <Card>
@@ -27,10 +27,9 @@ function RenderComment(dishItem) {
       </div>
     );
   });
-  return comments;
 }
 
-function RenderDishDetail(dish) {
+function renderDishDetail(dish) {
   return (
     <Card>
       <CardImg width="100%" src={dish.image} alt={dish.name} />
@@ -46,14 +45,10 @@ const DishDetail = (props) => {
   let dish = props.selectedDish;
   if (dish != null) {
     return (
-      <div className="row">
-        <div className="col-12 col-md-5 m-1">
-          <RenderDishDetail dish={dish} />
-        </div>
-        <div className="col-12 col-md-5 m-1">
-          <RenderComment dish={dish} />
-        </div>
-      </div>
+      <section className="row">
+        <div className="col-12 col-md-5 m-1">{renderDishDetail(dish)}</div>
+        <div className="col-12 col-md-5 m-1">{renderComment(dish)}</div>
+      </section>
     );
   } else {
     return <></>;
