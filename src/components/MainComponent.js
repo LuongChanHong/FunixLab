@@ -1,13 +1,4 @@
 import React, { Component } from "react";
-import {
-  Media,
-  Card,
-  CardImg,
-  CardImgOverlay,
-  CardBody,
-  CardText,
-  CardTitle,
-} from "reactstrap";
 
 import DishDetail from "./DishDetail";
 import Menu from "./Menu.js";
