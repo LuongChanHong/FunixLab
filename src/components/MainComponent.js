@@ -5,6 +5,7 @@ import { DISHES } from "../shared/dishes.js";
 import DishDetail from "./DishDetail";
 import Menu from "./Menu.js";
 import Header from "./Header.js";
+import Footer from "./Footer.js";
 
 class MainComponent extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class MainComponent extends Component {
             )[0]
           }
         />
+        <Footer />
       </section>
     );
   }
