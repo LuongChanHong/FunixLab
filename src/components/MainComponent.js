@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 
+import { DISHES } from "../shared/dishes.js";
+
 import DishDetail from "./DishDetail";
 import Menu from "./Menu.js";
-import { DISHES } from "../shared/dishes.js";
+import Header from "./Header.js";
 
 class MainComponent extends Component {
   constructor(props) {
@@ -20,6 +22,7 @@ class MainComponent extends Component {
   render() {
     return (
       <section className="container">
+        <Header />
         <Menu
           dishList={this.state.dishList}
           // Nhận dish id truyền về từ <Menu>
