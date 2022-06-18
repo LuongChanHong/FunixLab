@@ -1,16 +1,61 @@
 import React, { Component } from "react";
+import {
+  Card,
+  CardImg,
+  CardText,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+} from "reactstrap";
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <div className="container">
-        <h1>Home</h1>
-      </div>
-    );
-  }
+function RenderCard({ item }) {
+  return (
+    <Card>
+      <CardImg src={item.image} alt={item.name} />
+      <CardBody>
+        <CardTitle>{item.name}</CardTitle>
+        {item.designation ? (
+          <CardSubtitle>{item.designation}</CardSubtitle>
+        ) : null}
+        <CardText>{item.description}</CardText>
+      </CardBody>
+    </Card>
+  );
 }
+
+function Home(props) {
+  return (
+    <div className="container">
+      <div className="row align-items-start">
+        <div className="col-12 col-md m-1">
+          <RenderCard item={props.dish} />
+        </div>
+        <div className="col-12 col-md m-1">
+          <RenderCard item={props.promotion} />
+        </div>
+        <div className="col-12 col-md m-1">
+          <RenderCard item={props.leader} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// class Home extends Component {
+//   constructor(props) {
+//     super(props);
+//   }
+//   render() {
+//     return (
+//       <div className="container">
+//         <div className="row align-items-start">
+//           <div className="col-12 m-1">
+//             <RenderCard item={this.props.dish} />
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
 
 export default Home;
