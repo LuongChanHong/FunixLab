@@ -9,18 +9,20 @@ import {
 } from "reactstrap";
 
 function RenderCard({ item }) {
-  return (
-    <Card>
-      <CardImg src={item.image} alt={item.name} />
-      <CardBody>
-        <CardTitle>{item.name}</CardTitle>
-        {item.designation ? (
-          <CardSubtitle>{item.designation}</CardSubtitle>
-        ) : null}
-        <CardText>{item.description}</CardText>
-      </CardBody>
-    </Card>
-  );
+  if (item != undefined) {
+    return (
+      <Card>
+        <CardImg src={item.image} alt={item.name} />
+        <CardBody>
+          <CardTitle>{item.name}</CardTitle>
+          {item.designation ? (
+            <CardSubtitle>{item.designation}</CardSubtitle>
+          ) : null}
+          <CardText>{item.description}</CardText>
+        </CardBody>
+      </Card>
+    );
+  }
 }
 
 function Home(props) {
@@ -40,22 +42,5 @@ function Home(props) {
     </div>
   );
 }
-
-// class Home extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//   render() {
-//     return (
-//       <div className="container">
-//         <div className="row align-items-start">
-//           <div className="col-12 m-1">
-//             <RenderCard item={this.props.dish} />
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
 
 export default Home;

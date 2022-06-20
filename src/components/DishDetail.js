@@ -7,10 +7,13 @@ import {
   CardBody,
   CardText,
   CardTitle,
+  Breadcrumb,
+  BreadcrumbItem,
 } from "reactstrap";
+import { Link } from "react-router-dom";
 
-function renderComment(dish) {
-  return dish.comments?.map((cmt) => {
+function renderComment(comments) {
+  return comments?.map((cmt) => {
     return (
       <div key={cmt.id} className="my-2">
         <Card>
@@ -42,12 +45,31 @@ function renderDishDetail(dish) {
 }
 
 const DishDetail = (props) => {
-  let dish = props.selectedDish;
-  if (dish != null) {
+  // let dish = props.selectedDish;
+  if (props.dish != null) {
     return (
-      <section className="row">
-        <div className="col-12 col-md-5 m-1">{renderDishDetail(dish)}</div>
-        <div className="col-12 col-md-5 m-1">{renderComment(dish)}</div>
+      <section className="container">
+        <div className="row">
+          {/* Component hiển thị đường dẫn trang */}
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/menu">Menu</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+          </Breadcrumb>
+          <div className="col-12">
+            <h3>{props.dish.name}</h3>
+            <hr />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12 col-md-5 m-1">
+            {renderDishDetail(props.dish)}
+          </div>
+          <div className="col-12 col-md-5 m-1">
+            {renderComment(props.comments)}
+          </div>
+        </div>
       </section>
     );
   } else {
@@ -56,13 +78,3 @@ const DishDetail = (props) => {
 };
 
 export default DishDetail;
-
-{
-  /* <CardText className="text-danger">
-  {new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "numeric",
-    day: "2-digit",
-  }).format(new Date(Date.parse(cmt.date)))}
-</CardText>; */
-}

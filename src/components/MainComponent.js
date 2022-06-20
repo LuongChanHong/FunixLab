@@ -12,6 +12,7 @@ import Header from "./Header.js";
 import Footer from "./Footer.js";
 import Contact from "./Contact.js";
 import Home from "./Home.js";
+import DishDetail from "./DishDetail.js";
 
 class MainComponent extends Component {
   constructor(props) {
@@ -25,54 +26,61 @@ class MainComponent extends Component {
     };
   }
 
-  // handleDishSelected(dishID) {
-  //   this.setState({ selectedDish: dishID });
-  // }
-
   render() {
-    const HomePage = () => {
-      return <Home />;
+    const DishWithId = ({ match }) => {
+      // console.log("match:", match);
+      // const list = window.location.href.split("/");
+      // const id = list[list.length - 1];
+      // console.log("id:", id);
+      console.log("match.params:", match.params);
+
+      return (
+        <DishDetail
+          dish={
+            this.state.dishList.filter(
+              (dish) => dish.id === parseInt(match.params.dishId, 10)
+            )[0]
+          }
+          comments={
+            this.state.commentList.filter(
+              (cmt) => cmt.dishId === parseInt(match.params.dishId, 10)
+            )[0]
+          }
+        />
+      );
+    };
+
+    const HomeCompWithProps = () => {
+      return (
+        <Home
+          dish={this.state.dishList.filter((dish) => dish.featured == true)[0]}
+          promotion={
+            this.state.promotionList.filter(
+              (promo) => promo.featured == true
+            )[0]
+          }
+          leader={
+            this.state.leaderList.filter((lead) => lead.featured == true)[0]
+          }
+        />
+      );
     };
 
     return (
       <section className="container">
         <Header />
         <Routes>
-          <Route
-            exact
-            path="/home"
-            element={
-              <Home
-                dish={this.state.dishList.filter((dish) => dish.featured)[0]}
-                promotion={
-                  this.state.promotionList.filter((promo) => promo.featured)[0]
-                }
-                leader={
-                  this.state.leaderList.filter((lead) => lead.featured)[0]
-                }
-              />
-            }
-          />
+          <Route exact path="/home" element={<HomeCompWithProps />} />
           <Route exact path="/contactus" element={<Contact />} />
           <Route
             exact
             path="/menu"
             element={<Menu dishList={this.state.dishList} />}
           />
-          <Route path="*" element={<Home />} />
+          <Route path="/menu/:dishId" element={<DishWithId />} />
+          <Route path="*" element={<HomeCompWithProps />} />
         </Routes>
-        {/* <Menu
-          dishList={this.state.dishList}
-          // Nhận dish id truyền về từ <Menu>
-          onClick={(dishId) => this.handleDishSelected(dishId)}
-        />
-        <DishDetail
-          selectedDish={
-            this.state.dishList.filter(
-              (dish) => dish.id === this.state.selectedDish
-            )[0]
-          }
-        /> */}
+
         <Footer />
       </section>
     );
