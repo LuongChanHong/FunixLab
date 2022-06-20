@@ -45,8 +45,8 @@ function renderDishDetail(dish) {
 }
 
 const DishDetail = (props) => {
-  // let dish = props.selectedDish;
-  if (props.dish != null) {
+  let selectedDish = props.dish;
+  if (selectedDish != null) {
     return (
       <section className="container">
         <div className="row">
@@ -55,16 +55,16 @@ const DishDetail = (props) => {
             <BreadcrumbItem>
               <Link to="/menu">Menu</Link>
             </BreadcrumbItem>
-            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+            <BreadcrumbItem active>{selectedDish.name}</BreadcrumbItem>
           </Breadcrumb>
           <div className="col-12">
-            <h3>{props.dish.name}</h3>
+            <h3>{selectedDish.name}</h3>
             <hr />
           </div>
         </div>
         <div className="row">
           <div className="col-12 col-md-5 m-1">
-            {renderDishDetail(props.dish)}
+            {renderDishDetail(selectedDish)}
           </div>
           <div className="col-12 col-md-5 m-1">
             {renderComment(props.comments)}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import { Route, Redirect, Switch } from "react-router-dom";
-import { Routes, Navigate, Route } from "react-router-dom";
+import { Routes, Navigate, Route, useParams } from "react-router-dom";
 
 import { DISHES } from "../shared/dishes.js";
 import { COMMENTS } from "../shared/comments";
@@ -27,25 +27,16 @@ class MainComponent extends Component {
   }
 
   render() {
-    const DishWithId = ({ match }) => {
-      // console.log("match:", match);
-      // const list = window.location.href.split("/");
-      // const id = list[list.length - 1];
-      // console.log("id:", id);
-      console.log("match.params:", match.params);
+    const DishWithId = () => {
+      let { dishId } = useParams();
+      // console.log(this.state.commentList.find((cmt) => cmt.dishId == dishId));
 
       return (
         <DishDetail
-          dish={
-            this.state.dishList.filter(
-              (dish) => dish.id === parseInt(match.params.dishId, 10)
-            )[0]
-          }
-          comments={
-            this.state.commentList.filter(
-              (cmt) => cmt.dishId === parseInt(match.params.dishId, 10)
-            )[0]
-          }
+          dish={this.state.dishList.find((dish) => dish.id == dishId)}
+          comments={this.state.commentList.filter(
+            (cmt) => cmt.dishId == dishId
+          )}
         />
       );
     };
@@ -77,7 +68,6 @@ class MainComponent extends Component {
             path="/menu"
             element={<Menu dishList={this.state.dishList} />}
           />
-          {/* BUG CHỖ NÀY */}
           <Route path="/menu/:dishId" element={<DishWithId />} />
           <Route path="*" element={<HomeCompWithProps />} />
         </Routes>
