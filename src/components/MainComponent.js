@@ -77,6 +77,7 @@ class MainComponent extends Component {
             path="/menu"
             element={<Menu dishList={this.state.dishList} />}
           />
+          {/* BUG CHỖ NÀY */}
           <Route path="/menu/:dishId" element={<DishWithId />} />
           <Route path="*" element={<HomeCompWithProps />} />
         </Routes>
