@@ -1,5 +1,3 @@
-//RJS101x_asm2_honglcfx16049
-
 // import logo from "./logo.svg";
 import "./App.css";
 import React, { Component } from "react";

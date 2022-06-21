@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import Header from "./Header";
+import Footer from "./Footer";
 
 class StaffList extends Component {
   constructor(props) {
@@ -12,6 +13,8 @@ class StaffList extends Component {
     return (
       <div>
         <Header />
+        <h1>StaffList</h1>
+        <Footer />
       </div>
     );
   }
