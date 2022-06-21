@@ -6,3 +6,12 @@
 .component_bg {
   background-color: #b3b3b3;
 }
+
+.staff_detail_img {
+  /* width: 15rem;
+  height: 17rem; */
+}
+
+.breadcrumb_text {
+  width: 10rem;
+}

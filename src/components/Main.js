@@ -1,11 +1,11 @@
 import React, { Component } from "react";
+import { Route, Routes, useParams } from "react-router-dom";
+import { STAFFS } from "../database/staffs";
 //RJS101x_asm2_honglcfx16049
 import Departments from "./Departments";
 import SalaryList from "./SalaryList";
 import StaffList from "./StaffList";
-
-import { Route, Routes } from "react-router-dom";
-import { STAFFS } from "../database/staffs";
+import StaffDetail from "./StaffDetail";
 
 class Main extends Component {
   constructor(props) {
@@ -16,6 +16,15 @@ class Main extends Component {
   }
 
   render() {
+    const StaffDetailWithId = () => {
+      let { id } = useParams();
+      return (
+        <StaffDetail
+          selectedStaff={this.state.staffList.find((staff) => staff.id == id)}
+        />
+      );
+    };
+
     return (
       <section className="container">
         <Routes>
@@ -26,7 +35,11 @@ class Main extends Component {
           />
           <Route exact path="/salary" element={<SalaryList />} />
           <Route exact path="/department" element={<Departments />} />
-          <Route path="*" element={<StaffList />} />
+          <Route path="/staff/:id" element={<StaffDetailWithId />} />
+          <Route
+            path="*"
+            element={<StaffList staffList={this.state.staffList} />}
+          />
         </Routes>
       </section>
     );
