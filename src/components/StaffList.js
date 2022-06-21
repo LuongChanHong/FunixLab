@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import Header from "./Header";
+
 class StaffList extends Component {
   constructor(props) {
     super(props);
@@ -7,7 +9,11 @@ class StaffList extends Component {
   }
 
   render() {
-    return <div>StaffList</div>;
+    return (
+      <div>
+        <Header />
+      </div>
+    );
   }
 }
 
