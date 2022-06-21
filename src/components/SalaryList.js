@@ -5,11 +5,11 @@ import Footer from "./Footer";
 
 function SalaryList(props) {
   return (
-    <div>
+    <section className="component_bg">
       <Header />
       <h1>SalaryList</h1>
       <Footer />
-    </div>
+    </section>
   );
 }
 

@@ -4,19 +4,28 @@ import { Link } from "react-router-dom";
 function Footer(props) {
   return (
     <div className="footer">
-      <div className="container">
+      <div className="container py-3">
         <div className="row justify-content-center">
           <div className="col-4 offset-1 col-sm-2">
             <h5>Links</h5>
             <ul className="list-unstyled">
               <li>
-                <Link to="/staff">Nhân viên</Link>
+                <Link className="text-decoration-none text-white" to="/staff">
+                  Nhân viên
+                </Link>
               </li>
               <li>
-                <Link to="/salary">Bảng lương</Link>
+                <Link className="text-decoration-none text-white" to="/salary">
+                  Bảng lương
+                </Link>
               </li>
               <li>
-                <Link to="/department">Phòng ban</Link>
+                <Link
+                  className="text-decoration-none text-white"
+                  to="/department"
+                >
+                  Phòng ban
+                </Link>
               </li>
             </ul>
           </div>
@@ -33,12 +42,11 @@ function Footer(props) {
               <br />
               <i className="fa fa-fax fa-lg"></i>: +852 8765 4321
               <br />
-              <i className="fa fa-envelope fa-lg"></i>:{" "}
-              <a href="mailto:confusion@food.net">confusion@food.net</a>
             </address>
           </div>
           <div className="col-12 col-sm-4 align-self-center">
-            <div className="text-center">
+            <h5>Contact us</h5>
+            <div className="text-center d-flex justify-content-start">
               <a
                 className="btn btn-social-icon btn-facebook"
                 href="http://www.facebook.com/profile.php?id="

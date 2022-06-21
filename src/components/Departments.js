@@ -5,11 +5,11 @@ import Footer from "./Footer";
 
 function Departments(props) {
   return (
-    <div>
+    <section className="component_bg">
       <Header />
       <h1>Departments</h1>
       <Footer />
-    </div>
+    </section>
   );
 }
 
