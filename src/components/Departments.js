@@ -1,28 +1,19 @@
 import React from "react";
-import { Card, CardBody, CardTitle, CardText } from "reactstrap";
 
 import Header from "./Header";
 import Footer from "./Footer";
+import DepartmentItem from "./DepartmentItem";
 
+// Render ra Presentational Component
 const renderDepartments = (list) => {
-  // let list = props.departments;
-  return list.map((item) => (
-    <div key={item.id} className="col-sm-12 col-md-6 col-lg-4 my-2">
-      <Card>
-        <CardBody>
-          <CardTitle>Phòng {item.name}</CardTitle>
-          <CardText>Số nhân viên: {item.numberOfStaff}</CardText>
-        </CardBody>
-      </Card>
-    </div>
-  ));
+  return list.map((item) => <DepartmentItem key={item.id} department={item} />);
 };
 
 function Departments(props) {
   return (
     <section className="component_bg">
       <Header />
-      <div className="container component_bg">
+      <div className="container">
         <h1>Phòng ban</h1>
         <hr />
         <div className="row">{renderDepartments(props.departments)}</div>
