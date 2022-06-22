@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
-import { STAFFS } from "../database/staffs";
+import { STAFFS, DEPARTMENTS } from "../database/staffs";
 //RJS101x_asm2_honglcfx16049
 import Departments from "./Departments";
 import SalaryList from "./SalaryList";
@@ -12,6 +12,7 @@ class Main extends Component {
     super(props);
     this.state = {
       staffList: STAFFS,
+      departments: DEPARTMENTS,
     };
   }
 
@@ -33,8 +34,16 @@ class Main extends Component {
             path="/staff"
             element={<StaffList staffList={this.state.staffList} />}
           />
-          <Route exact path="/salary" element={<SalaryList />} />
-          <Route exact path="/department" element={<Departments />} />
+          <Route
+            exact
+            path="/salary"
+            element={<SalaryList staffList={this.state.staffList} />}
+          />
+          <Route
+            exact
+            path="/department"
+            element={<Departments departments={this.state.departments} />}
+          />
           <Route path="/staff/:id" element={<StaffDetailWithId />} />
           <Route
             path="*"
