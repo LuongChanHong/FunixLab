@@ -18,7 +18,13 @@ const renderSaraly = (list) => {
             Ngày làm thêm: {staff.overTime} {"(ngày)"}
           </CardText>
         </CardBody>
-        <CardFooter>Lương: </CardFooter>
+        <CardFooter>
+          Lương:{" "}
+          {new Intl.NumberFormat().format(
+            Math.round(staff.salaryScale * 3000000 + staff.overTime * 200000)
+          )}{" "}
+          vnđ
+        </CardFooter>
       </Card>
     </div>
   ));
