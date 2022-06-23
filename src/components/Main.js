@@ -3,7 +3,7 @@ import { Route, Routes, useParams } from "react-router-dom";
 import { STAFFS, DEPARTMENTS } from "../database/staffs";
 //RJS101x_asm2_honglcfx16049
 import Departments from "./Departments";
-import SalaryList from "./SalaryList";
+import Salary from "./Salary";
 import StaffList from "./StaffList";
 import StaffDetail from "./StaffDetail";
 
@@ -37,7 +37,7 @@ class Main extends Component {
           <Route
             exact
             path="/salary"
-            element={<SalaryList staffList={this.state.staffList} />}
+            element={<Salary staffList={this.state.staffList} />}
           />
           <Route
             exact
