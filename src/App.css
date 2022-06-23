@@ -7,9 +7,8 @@
   background-color: #b3b3b3;
 }
 
-.staff_detail_img {
-  /* width: 15rem;
-  height: 17rem; */
+#sortOption {
+  width: 10rem;
 }
 
 .breadcrumb_text {
