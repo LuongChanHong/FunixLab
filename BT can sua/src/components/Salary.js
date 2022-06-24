@@ -19,12 +19,13 @@ class Salary extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      sortOption: null,
       sortedList: this.props.staffList,
     };
   }
 
-  // Tính lương tất cả nhân viên
-  calcuAllStaffSalary = (list) => {
+  // Tính lương nhân viên
+  calcuStaffSalary = (list) => {
     list.forEach(
       (staff) =>
         (staff.salary = Math.round(
@@ -71,38 +72,68 @@ class Salary extends Component {
     ));
   };
 
-  // Sort staff list theo option truyền vào
-  renderSalaryBySortOption = (sortOption) => {
-    let sortedList;
-    if (sortOption == "maNV") {
-      // Sort theo mã NV
-      sortedList = this.state.sortedList.sort((firstItem, secondItem) => {
-        return firstItem.id - secondItem.id;
-      });
-    } else if (sortOption == "giamDan") {
-      // Sort theo lương giảm dần (cao xuống thấp)
-      sortedList = this.state.sortedList.sort((firstItem, secondItem) => {
-        return secondItem.salary - firstItem.salary;
-      });
-    } else if (sortOption == "tangDan") {
-      // Sort theo lương tăng dần (thấp lên cao)
-      sortedList = this.state.sortedList.sort((firstItem, secondItem) => {
-        return firstItem.salary - secondItem.salary;
-      });
+  // Xếp theo lương cao nhất
+  sortByHightSalary = () => {
+    // console.log("sortBySalary");
+    // let sortOption = this.state.sortOption;
+    let list = this.state.sortedList;
+    let i, j, temp;
+    temp = i = j = 0;
+    for (let h = 0; h < list.length - 1; h++) {
+      for (let i = 1; i < list.length; i++) {
+        j = i - 1;
+        if (list[j].salary < list[i].salary) {
+          temp = list[j].salary;
+          list[j].salary = list[i].salary;
+          list[i].salary = temp;
+        }
+      }
     }
-    this.setState({ sortedList: sortedList });
+
+    let salary = [];
+    list.forEach((item) => salary.push(item.salary));
+    console.log(salary);
+    this.setState({ sortedList: list });
   };
 
-  // Xử lí khi input option thay đổi
+  renderSalaryBySortOption = () => {
+    if (this.state.sortOption == "maNV") {
+      console.log("sort theo mã NV");
+    } else if (this.state.sortOption == "giamDan") {
+      // this.sortByHightSalary();
+      this.state.sortedList.sort((firstItem, secondItem) => {
+        return (
+          secondItem.salaryScale * basicSalary +
+          secondItem.overTime * overTimeSalary -
+          (firstItem.salaryScale * basicSalary +
+            firstItem.overTime * overTimeSalary)
+        );
+      });
+      console.log("sort theo lương giảm dần");
+    } else if (this.state.sortOption == "tangDan") {
+      this.state.sortedList.sort((firstItem, secondItem) => {
+        return (
+          firstItem.salaryScale * basicSalary +
+          firstItem.overTime * overTimeSalary -
+          (secondItem.salaryScale * basicSalary +
+            secondItem.overTime * overTimeSalary)
+        );
+      });
+      console.log("sort theo lương tăng dần");
+    }
+  };
+
+  // Set new sortOption in state
   handleChange = (event) => {
-    // Sort staff list theo option truyền vào
-    this.renderSalaryBySortOption(event.target.value);
+    this.setState({ sortOption: event.target.value });
+    // console.log("event.target.value:", event.target.value);
+    this.renderSalaryBySortOption();
   };
 
   // MAIN RENDER FUNCTION
   render() {
     {
-      this.calcuAllStaffSalary(this.props.staffList);
+      this.calcuStaffSalary(this.props.staffList);
     }
     return (
       <section className="component_bg">
