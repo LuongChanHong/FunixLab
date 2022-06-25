@@ -8,6 +8,8 @@ import {
   Label,
   Input,
   Col,
+  Row,
+  FormFeedback,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -22,9 +24,54 @@ class Contact extends Component {
       agree: "",
       contactType: "",
       message: "",
+      touched: {
+        firstName: false,
+        lastName: false,
+        email: false,
+        telNum: false,
+      },
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+  }
+
+  handleBlur = (field) => (event) => {
+    this.setState({ touched: { ...this.state.touched, [field]: true } });
+  };
+
+  validation(firstName, lastName, email, telNum) {
+    const errors = {
+      firstName: "",
+      lastName: "",
+      telNum: "",
+      email: "",
+    };
+    const regular = /^\d+$/; // tất cả kí tự trong string phải là số
+    if (this.state.touched.firstName && firstName.length < 3) {
+      errors.firstName = "first name should be >= 3 character";
+    } else if (this.state.touched.firstName && firstName.length > 10) {
+      errors.firstName = "first name should be <= 10 character";
+    }
+
+    if (this.state.touched.lastName && lastName.length < 3) {
+      errors.lastName = "last name should be >= 3 character";
+    } else if (this.state.touched.lastName && lastName.length > 10) {
+      errors.lastName = "last name should be <= 10 character";
+    }
+
+    if (this.state.touched.telNum && !regular.test(telNum)) {
+      errors.telNum = "tel number should contain only number";
+    }
+
+    if (
+      this.state.touched.email &&
+      email.split("").filter((item) => item === "@").length !== 1
+    ) {
+      errors.email = "email should contain a @";
+    }
+
+    return errors;
   }
 
   handleInputChange(event) {
@@ -41,6 +88,13 @@ class Contact extends Component {
   }
 
   render() {
+    const errors = this.validation(
+      this.state.firstName,
+      this.state.lastName,
+      this.state.email,
+      this.state.telNum
+    );
+
     return (
       <div className="container">
         <div className="row">
@@ -120,9 +174,13 @@ class Contact extends Component {
                     id="firstName"
                     name="firstName"
                     placeholder="first name"
+                    valid={errors.firstName === ""}
+                    invalid={errors.firstName !== ""}
                     value={this.state.firstName} // controlled form spot light
                     onChange={this.handleInputChange}
+                    onBlur={this.handleBlur("firstName")}
                   />
+                  <FormFeedback>{errors.firstName}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* Input item */}
@@ -136,9 +194,13 @@ class Contact extends Component {
                     id="lastName"
                     name="lastName"
                     placeholder="last name"
+                    valid={errors.lastName === ""}
+                    invalid={errors.lastName !== ""}
                     value={this.state.lastName} // controlled form spot light
                     onChange={this.handleInputChange}
+                    onBlur={this.handleBlur("lastName")}
                   />
+                  <FormFeedback>{errors.lastName}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* Input item */}
@@ -152,9 +214,13 @@ class Contact extends Component {
                     id="telNum"
                     name="telNum"
                     placeholder="Tel. Number"
+                    valid={errors.telNum === ""}
+                    invalid={errors.telNum !== ""}
                     value={this.state.telNum} // controlled form spot light
                     onChange={this.handleInputChange}
+                    onBlur={this.handleBlur("telNum")}
                   />
+                  <FormFeedback>{errors.telNum}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* Input item */}
@@ -168,9 +234,13 @@ class Contact extends Component {
                     id="email"
                     name="email"
                     placeholder="Email"
+                    valid={errors.email === ""}
+                    invalid={errors.email !== ""}
                     value={this.state.email} // controlled form spot light
                     onChange={this.handleInputChange}
+                    onBlur={this.handleBlur("email")}
                   />
+                  <FormFeedback>{errors.email}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* Input item */}
