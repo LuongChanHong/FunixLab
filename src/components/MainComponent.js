@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 // import { Route, Redirect, Switch } from "react-router-dom";
-import { Routes, Navigate, Route, useParams } from "react-router-dom";
-
-import { DISHES } from "../shared/dishes.js";
-import { COMMENTS } from "../shared/comments";
-import { LEADERS } from "../shared/leaders";
-import { PROMOTIONS } from "../shared/promotions";
+import { Routes, Route, useParams, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 import Menu from "./Menu.js";
 import Header from "./Header.js";
@@ -14,27 +10,28 @@ import Contact from "./Contact.js";
 import Home from "./Home.js";
 import DishDetail from "./DishDetail.js";
 
+// Redux
+const mapStateToProps = (state) => {
+  return {
+    dishList: state.dishList,
+    commentList: state.commentList,
+    leaderList: state.leaderList,
+    promotionList: state.promotionList,
+  };
+};
+
 class MainComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // selectedDish: null,
-      dishList: DISHES,
-      commentList: COMMENTS,
-      leaderList: LEADERS,
-      promotionList: PROMOTIONS,
-    };
   }
 
   render() {
     const DishWithId = () => {
       let { dishId } = useParams();
-      // console.log(this.state.commentList.find((cmt) => cmt.dishId == dishId));
-
       return (
         <DishDetail
-          dish={this.state.dishList.find((dish) => dish.id == dishId)}
-          comments={this.state.commentList.filter(
+          dish={this.props.dishList.find((dish) => dish.id == dishId)}
+          comments={this.props.commentList.filter(
             (cmt) => cmt.dishId == dishId
           )}
         />
@@ -44,14 +41,14 @@ class MainComponent extends Component {
     const HomeCompWithProps = () => {
       return (
         <Home
-          dish={this.state.dishList.filter((dish) => dish.featured == true)[0]}
+          dish={this.props.dishList.filter((dish) => dish.featured == true)[0]}
           promotion={
-            this.state.promotionList.filter(
+            this.props.promotionList.filter(
               (promo) => promo.featured == true
             )[0]
           }
           leader={
-            this.state.leaderList.filter((lead) => lead.featured == true)[0]
+            this.props.leaderList.filter((lead) => lead.featured == true)[0]
           }
         />
       );
@@ -66,7 +63,7 @@ class MainComponent extends Component {
           <Route
             exact
             path="/menu"
-            element={<Menu dishList={this.state.dishList} />}
+            element={<Menu dishList={this.props.dishList} />}
           />
           <Route path="/menu/:dishId" element={<DishWithId />} />
           <Route path="*" element={<HomeCompWithProps />} />
@@ -78,4 +75,5 @@ class MainComponent extends Component {
   }
 }
 
-export default MainComponent;
+// Kết nối comp dùng redux với react router dom
+export default connect(mapStateToProps)(MainComponent);
