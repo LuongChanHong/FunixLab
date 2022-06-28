@@ -11,89 +11,89 @@ import {
   Row,
   FormFeedback,
 } from "reactstrap";
+import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
 
 class Contact extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      firstName: "",
-      lastName: "",
-      telNum: "",
-      email: "",
-      agree: "",
-      contactType: "",
-      message: "",
-      touched: {
-        firstName: false,
-        lastName: false,
-        email: false,
-        telNum: false,
-      },
-    };
+    // this.state = {
+    //   firstName: "",
+    //   lastName: "",
+    //   telNum: "",
+    //   email: "",
+    //   agree: "",
+    //   contactType: "",
+    //   message: "",
+    //   touched: {
+    //     firstName: false,
+    //     lastName: false,
+    //     email: false,
+    //     telNum: false,
+    //   },
+    // };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
+    // this.handleInputChange = this.handleInputChange.bind(this);
+    // this.handleBlur = this.handleBlur.bind(this);
   }
 
-  handleBlur = (field) => (event) => {
-    this.setState({ touched: { ...this.state.touched, [field]: true } });
-  };
+  // handleBlur = (field) => (event) => {
+  //   this.setState({ touched: { ...this.state.touched, [field]: true } });
+  // };
 
-  validation(firstName, lastName, email, telNum) {
-    const errors = {
-      firstName: "",
-      lastName: "",
-      telNum: "",
-      email: "",
-    };
-    const regular = /^\d+$/; // tất cả kí tự trong string phải là số
-    if (this.state.touched.firstName && firstName.length < 3) {
-      errors.firstName = "first name should be >= 3 character";
-    } else if (this.state.touched.firstName && firstName.length > 10) {
-      errors.firstName = "first name should be <= 10 character";
-    }
+  // validation(firstName, lastName, email, telNum) {
+  //   const errors = {
+  //     firstName: "",
+  //     lastName: "",
+  //     telNum: "",
+  //     email: "",
+  //   };
+  //   const regular = /^\d+$/; // tất cả kí tự trong string phải là số
+  //   if (this.state.touched.firstName && firstName.length < 3) {
+  //     errors.firstName = "first name should be >= 3 character";
+  //   } else if (this.state.touched.firstName && firstName.length > 10) {
+  //     errors.firstName = "first name should be <= 10 character";
+  //   }
 
-    if (this.state.touched.lastName && lastName.length < 3) {
-      errors.lastName = "last name should be >= 3 character";
-    } else if (this.state.touched.lastName && lastName.length > 10) {
-      errors.lastName = "last name should be <= 10 character";
-    }
+  //   if (this.state.touched.lastName && lastName.length < 3) {
+  //     errors.lastName = "last name should be >= 3 character";
+  //   } else if (this.state.touched.lastName && lastName.length > 10) {
+  //     errors.lastName = "last name should be <= 10 character";
+  //   }
 
-    if (this.state.touched.telNum && !regular.test(telNum)) {
-      errors.telNum = "tel number should contain only number";
-    }
+  //   if (this.state.touched.telNum && !regular.test(telNum)) {
+  //     errors.telNum = "tel number should contain only number";
+  //   }
 
-    if (
-      this.state.touched.email &&
-      email.split("").filter((item) => item === "@").length !== 1
-    ) {
-      errors.email = "email should contain a @";
-    }
+  //   if (
+  //     this.state.touched.email &&
+  //     email.split("").filter((item) => item === "@").length !== 1
+  //   ) {
+  //     errors.email = "email should contain a @";
+  //   }
 
-    return errors;
-  }
+  //   return errors;
+  // }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    this.setState({ [name]: value });
-  }
+  // handleInputChange(event) {
+  //   const target = event.target;
+  //   const value = target.type === "checkbox" ? target.checked : target.value;
+  //   const name = target.name;
+  //   this.setState({ [name]: value });
+  // }
 
-  handleSubmit(event) {
-    console.log("State: ", JSON.stringify(this.state));
-    alert("State: " + JSON.stringify(this.state));
-    event.preventDefault();
+  handleSubmit(value) {
+    console.log("State: ", JSON.stringify(value));
+    alert("State: " + JSON.stringify(value));
   }
 
   render() {
-    const errors = this.validation(
-      this.state.firstName,
-      this.state.lastName,
-      this.state.email,
-      this.state.telNum
-    );
+    // const errors = this.validation(
+    //   this.state.firstName,
+    //   this.state.lastName,
+    //   this.state.email,
+    //   this.state.telNum
+    // );
 
     return (
       <div className="container">
@@ -156,145 +156,122 @@ class Contact extends Component {
             </div>
           </div>
         </div>
-        {/* CONTROLLED FORM */}
+        {/* FORM */}
         <div className="row row-content">
           <div className="col-12">
             <h3>Send us your feedback</h3>
           </div>
           <div className="col-12 col-md-9">
-            <Form onSubmit={this.handleSubmit}>
+            <LocalForm onSubmit={(value) => this.handleSubmit(value)}>
               {/* Input item */}
-              <FormGroup row>
+              <Row className="form-group">
                 <Label md={2} htmlFor="firstName">
                   First name:
                 </Label>
                 <Col md={10}>
-                  <Input
-                    type="text"
+                  <Control.text
+                    model=".firstName"
                     id="firstName"
                     name="firstName"
                     placeholder="first name"
-                    valid={errors.firstName === ""}
-                    invalid={errors.firstName !== ""}
-                    value={this.state.firstName} // controlled form spot light
-                    onChange={this.handleInputChange}
-                    onBlur={this.handleBlur("firstName")}
+                    className="form-control"
                   />
-                  <FormFeedback>{errors.firstName}</FormFeedback>
                 </Col>
-              </FormGroup>
+              </Row>
               {/* Input item */}
-              <FormGroup row>
+              <Row className="form-group">
                 <Label md={2} htmlFor="lastName">
                   Last name:
                 </Label>
                 <Col md={10}>
-                  <Input
-                    type="text"
+                  <Control.text
+                    model=".lastName"
                     id="lastName"
                     name="lastName"
                     placeholder="last name"
-                    valid={errors.lastName === ""}
-                    invalid={errors.lastName !== ""}
-                    value={this.state.lastName} // controlled form spot light
-                    onChange={this.handleInputChange}
-                    onBlur={this.handleBlur("lastName")}
+                    className="form-control"
                   />
-                  <FormFeedback>{errors.lastName}</FormFeedback>
                 </Col>
-              </FormGroup>
+              </Row>
               {/* Input item */}
-              <FormGroup row>
+              <Row className="form-group">
                 <Label md={2} htmlFor="telNum">
                   Contact Tel:
                 </Label>
                 <Col md={10}>
-                  <Input
-                    type="tel"
+                  <Control.text
+                    model=".telNum"
                     id="telNum"
                     name="telNum"
                     placeholder="Tel. Number"
-                    valid={errors.telNum === ""}
-                    invalid={errors.telNum !== ""}
-                    value={this.state.telNum} // controlled form spot light
-                    onChange={this.handleInputChange}
-                    onBlur={this.handleBlur("telNum")}
+                    className="form-control"
                   />
-                  <FormFeedback>{errors.telNum}</FormFeedback>
                 </Col>
-              </FormGroup>
+              </Row>
               {/* Input item */}
-              <FormGroup row>
+              <Row className="form-group">
                 <Label md={2} htmlFor="email">
                   Email:
                 </Label>
                 <Col md={10}>
-                  <Input
-                    type="email"
+                  <Control.text
+                    model=".email"
                     id="email"
                     name="email"
                     placeholder="Email"
-                    valid={errors.email === ""}
-                    invalid={errors.email !== ""}
-                    value={this.state.email} // controlled form spot light
-                    onChange={this.handleInputChange}
-                    onBlur={this.handleBlur("email")}
+                    className="form-control"
                   />
-                  <FormFeedback>{errors.email}</FormFeedback>
                 </Col>
-              </FormGroup>
+              </Row>
               {/* Input item */}
-              <FormGroup row>
+              <Row className="form-group">
                 <Col md={{ size: 6, offset: 2 }}>
-                  <FormGroup check>
+                  <div className="form-check">
                     <Label check>
-                      <Input
-                        type="checkbox"
+                      <Control.checkbox
+                        model=".agree"
                         name="agree"
-                        checked={this.state.agree} // controlled form spot light
-                        onChange={this.handleInputChange}
+                        className="form-check-input"
                       />{" "}
                       <strong>May we contact you ?</strong>
                     </Label>
-                  </FormGroup>
+                  </div>
                 </Col>
                 <Col md={{ size: 3, offset: 1 }}>
-                  <Input
-                    type="select"
+                  <Control.select
+                    model=".contactType"
                     name="contactType"
-                    value={this.state.contactType}
-                    onChange={this.handleInputChange}
+                    className="form-control"
                   >
                     <option>Tel.</option>
                     <option>Email</option>
-                  </Input>
+                  </Control.select>
                 </Col>
-              </FormGroup>
+              </Row>
               {/* Input item */}
-              <FormGroup row>
+              <Row className="form-group">
                 <Label md={2} htmlFor="message">
                   Feed back:
                 </Label>
                 <Col md={10}>
-                  <Input
-                    type="textarea"
+                  <Control.textarea
+                    model=".message"
                     id="message"
                     name="message"
                     row={12}
-                    value={this.state.message} // controlled form spot light
-                    onChange={this.handleInputChange}
+                    className="form-control"
                   />
                 </Col>
-              </FormGroup>
+              </Row>
               {/* Input item */}
-              <FormGroup row>
+              <Row className="form-group">
                 <Col md={{ size: 10, offset: 2 }}>
                   <Button type="submit" color="primary">
                     Send feedback
                   </Button>
                 </Col>
-              </FormGroup>
-            </Form>
+              </Row>
+            </LocalForm>
           </div>
         </div>
       </div>
