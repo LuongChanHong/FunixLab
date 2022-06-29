@@ -1,4 +1,5 @@
 //RJS101x_asm3_honglcfx16049
+//RJS101x_asm3_honglcfx16049 PART_1
 import React, { Component } from "react";
 import {
   Card,
