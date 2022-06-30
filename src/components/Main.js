@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
+
 import { STAFFS, DEPARTMENTS } from "../database/staffs";
-//RJS101x_asm2_honglcfx16049
 import Departments from "./Departments";
 import Salary from "./Salary";
 import StaffList from "./StaffList";
@@ -47,7 +47,12 @@ class Main extends Component {
           <Route path="/staff/:id" element={<StaffDetailWithId />} />
           <Route
             path="*"
-            element={<StaffList staffList={this.state.staffList} />}
+            element={
+              <StaffList
+                staffModel={this.state.staffModel}
+                staffList={this.state.staffList}
+              />
+            }
           />
         </Routes>
       </section>
