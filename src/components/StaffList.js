@@ -14,11 +14,17 @@ import {
   ModalHeader,
   ModalBody,
   Col,
+  FormFeedback,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
 import Header from "./Header";
 import Footer from "./Footer";
+
+const MIN_NUM_LIMIT = 1;
+const MAX_NUM_LIMIT = 30;
+const MIN_CHAR_LIMIT = 3;
+const MAX_CHAR_LIMIT = 30;
 
 class StaffList extends Component {
   constructor(props) {
@@ -33,14 +39,25 @@ class StaffList extends Component {
         salaryScale: "",
         startDate: "",
         department: "",
-        annualLeave: "",
+        annualLeave: null,
         overTime: "",
         image: "/assets/images/alberto.png",
         salary: "",
       },
+
+      touched: {
+        name: false,
+        doB: false,
+        salaryScale: false,
+        startDate: false,
+        department: false,
+        annualLeave: false,
+        overTime: false,
+      },
     };
   }
 
+  // Render danh sách staff
   renderStaffList = (list) => {
     return list.map((staff) => (
       <div key={staff.id} className="col-sm-6 col-md-4 col-lg-2 my-1">
@@ -56,6 +73,7 @@ class StaffList extends Component {
     ));
   };
 
+  // HTML sẽ hiện ra khi search không có kết quả
   handleStaffListNull = () => {
     return <h4 className="text-center text-danger">Không tìm thấy</h4>;
   };
@@ -73,12 +91,14 @@ class StaffList extends Component {
     event.preventDefault();
   };
 
+  // Tắt mở form thêm staff
   toggleModal = () => {
     this.setState({
       isModalOpen: !this.state.isModalOpen,
     });
   };
 
+  // Nhập nội dung input vào state khi submit
   setInputToState = (event) => {
     const input = event.target;
     this.setState({
@@ -90,6 +110,7 @@ class StaffList extends Component {
     });
   };
 
+  // Thêm staff mới vào staffList
   addNewStaff = (event) => {
     this.setState({
       staffList: [...this.state.staffList, this.state.staffModel],
@@ -99,7 +120,99 @@ class StaffList extends Component {
     event.preventDefault();
   };
 
+  // Đánh dấu các input đã được nhấp vào
+  handleBlur = (inputName) => (event) => {
+    this.setState({ touched: { ...this.state.touched, [inputName]: true } });
+  };
+
+  // Xét các input
+  inputValidation = (
+    name,
+    doB,
+    salaryScale,
+    startDate,
+    department,
+    annualLeave,
+    overTime
+  ) => {
+    const error = {
+      name: "",
+      doB: "",
+      salaryScale: "",
+      startDate: "",
+      department: "",
+      annualLeave: "",
+      overTime: "",
+    };
+    const regular = /^\d+$/; // tất cả kí tự trong string phải là số
+
+    // Xét tên
+    if (
+      this.state.touched.name &&
+      (name.length < MIN_CHAR_LIMIT || name.length > MAX_CHAR_LIMIT)
+    ) {
+      error.name = `Họ tên phải có số kí tự >= ${MIN_CHAR_LIMIT} và <= ${MAX_CHAR_LIMIT}`;
+    }
+
+    // Xét hệ số lương
+    if (
+      (this.state.touched.salaryScale && !regular.test(salaryScale)) ||
+      (this.state.touched.salaryScale &&
+        (salaryScale < MIN_NUM_LIMIT || salaryScale > MAX_NUM_LIMIT))
+    ) {
+      error.salaryScale = `Hệ số là số từ ${MIN_NUM_LIMIT} đến ${MAX_NUM_LIMIT}`;
+    }
+
+    // Xét số ngày nghỉ
+    if (
+      (this.state.touched.annualLeave && !regular.test(annualLeave)) ||
+      (this.state.touched.annualLeave &&
+        (annualLeave < MIN_NUM_LIMIT || annualLeave > MAX_NUM_LIMIT))
+    ) {
+      error.annualLeave = `Số ngày nghỉ là số từ ${MIN_NUM_LIMIT} đến ${MAX_NUM_LIMIT}`;
+    }
+
+    // Xét số ngày làm thêm
+    if (
+      (this.state.touched.overTime && !regular.test(overTime)) ||
+      (this.state.touched.overTime &&
+        (overTime < MIN_NUM_LIMIT || overTime > MAX_NUM_LIMIT))
+    ) {
+      error.overTime = `Ngày làm thêm là số từ ${MIN_NUM_LIMIT} đến ${MAX_NUM_LIMIT}`;
+    }
+
+    // Xét phòng ban
+    if (
+      this.state.touched.department &&
+      (department === "Select" || department === "")
+    ) {
+      error.department = "Phòng ban không hợp lệ";
+    }
+
+    // Xét ngày sinh
+    if (this.state.touched.doB && doB === "") {
+      error.doB = "Không được bỏ trống";
+    }
+
+    // Xét ngày vào công ty
+    if (this.state.touched.startDate && startDate === "") {
+      error.startDate = "Không được bỏ trống";
+    }
+    return error;
+  };
+
   render() {
+    // Nhận thông báo lỗi, hiện ra khi cần
+    const error = this.inputValidation(
+      this.state.staffModel.name,
+      this.state.staffModel.doB,
+      this.state.staffModel.salaryScale,
+      this.state.staffModel.startDate,
+      this.state.staffModel.department,
+      this.state.staffModel.annualLeave,
+      this.state.staffModel.overTime
+    );
+
     return (
       <section className="component_bg">
         <Header />
@@ -156,7 +269,11 @@ class StaffList extends Component {
                     name="name" // phải trùng với thuộc tính state muốn gán
                     value={this.state.staffModel.name} // value sẽ hiện trong input html
                     onChange={this.setInputToState}
+                    // valid={error.name === ""}
+                    invalid={error.name !== ""}
+                    onBlur={this.handleBlur("name")}
                   />
+                  <FormFeedback>{error.name}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* FORM ITEM birthInput*/}
@@ -171,7 +288,10 @@ class StaffList extends Component {
                     name="doB" // phải trùng với thuộc tính state muốn gán
                     value={this.state.staffModel.doB} // value sẽ hiện trong input html
                     onChange={this.setInputToState}
+                    invalid={error.doB !== ""}
+                    onBlur={this.handleBlur("doB")}
                   />
+                  <FormFeedback>{error.doB}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* FORM ITEM depInput*/}
@@ -186,6 +306,8 @@ class StaffList extends Component {
                     name="department" // phải trùng với thuộc tính state muốn gán
                     value={this.state.staffModel.department} // value sẽ hiện trong input html
                     onChange={this.setInputToState}
+                    invalid={error.department !== ""}
+                    onBlur={this.handleBlur("department")}
                   >
                     <option>Select</option>
                     <option>Sale</option>
@@ -194,6 +316,7 @@ class StaffList extends Component {
                     <option>IT</option>
                     <option>Finance</option>
                   </Input>
+                  <FormFeedback>{error.department}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* FORM ITEM scaleInput*/}
@@ -208,7 +331,10 @@ class StaffList extends Component {
                     name="salaryScale" // phải trùng với thuộc tính state muốn gán
                     value={this.state.staffModel.salaryScale} // value sẽ hiện trong input html
                     onChange={this.setInputToState}
+                    invalid={error.salaryScale !== ""}
+                    onBlur={this.handleBlur("salaryScale")}
                   />
+                  <FormFeedback>{error.salaryScale}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* FORM ITEM OTInput*/}
@@ -223,7 +349,10 @@ class StaffList extends Component {
                     name="overTime" // phải trùng với thuộc tính state muốn gán
                     value={this.state.staffModel.overTime} // value sẽ hiện trong input html
                     onChange={this.setInputToState}
+                    invalid={error.overTime !== ""}
+                    onBlur={this.handleBlur("overTime")}
                   />
+                  <FormFeedback>{error.overTime}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* FORM ITEM dayOffInput*/}
@@ -238,7 +367,10 @@ class StaffList extends Component {
                     name="annualLeave" // phải trùng với thuộc tính state muốn gán
                     value={this.state.staffModel.annualLeave} // value sẽ hiện trong input html
                     onChange={this.setInputToState}
+                    invalid={error.annualLeave !== ""}
+                    onBlur={this.handleBlur("annualLeave")}
                   />
+                  <FormFeedback>{error.annualLeave}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* FORM ITEM startInput*/}
@@ -253,7 +385,10 @@ class StaffList extends Component {
                     name="startDate" // phải trùng với thuộc tính state muốn gán
                     value={this.state.staffModel.startDate} // value sẽ hiện trong input html
                     onChange={this.setInputToState}
+                    invalid={error.startDate !== ""}
+                    onBlur={this.handleBlur("startDate")}
                   />
+                  <FormFeedback>{error.startDate}</FormFeedback>
                 </Col>
               </FormGroup>
               {/* FORM ITEM submit button*/}
