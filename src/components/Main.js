@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
+import { connect } from "react-redux";
 
 import { STAFFS, DEPARTMENTS } from "../database/staffs";
 import Departments from "./Departments";
@@ -7,13 +8,13 @@ import Salary from "./Salary";
 import StaffList from "./StaffList";
 import StaffDetail from "./StaffDetail";
 
+const mapStateToProps = (state) => {
+  return { staffList: state.staffList, departments: state.departments };
+};
+
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      staffList: STAFFS,
-      departments: DEPARTMENTS,
-    };
   }
 
   render() {
@@ -21,7 +22,7 @@ class Main extends Component {
       let { id } = useParams();
       return (
         <StaffDetail
-          selectedStaff={this.state.staffList.find((staff) => staff.id == id)}
+          selectedStaff={this.props.staffList.find((staff) => staff.id == id)}
         />
       );
     };
@@ -32,25 +33,25 @@ class Main extends Component {
           <Route
             exact
             path="/staff"
-            element={<StaffList staffList={this.state.staffList} />}
+            element={<StaffList staffList={this.props.staffList} />}
           />
           <Route
             exact
             path="/salary"
-            element={<Salary staffList={this.state.staffList} />}
+            element={<Salary staffList={this.props.staffList} />}
           />
           <Route
             exact
             path="/department"
-            element={<Departments departments={this.state.departments} />}
+            element={<Departments departments={this.props.departments} />}
           />
           <Route path="/staff/:id" element={<StaffDetailWithId />} />
           <Route
             path="*"
             element={
               <StaffList
-                staffModel={this.state.staffModel}
-                staffList={this.state.staffList}
+                staffModel={this.props.staffModel}
+                staffList={this.props.staffList}
               />
             }
           />
@@ -60,4 +61,5 @@ class Main extends Component {
   }
 }
 
-export default Main;
+// Kết nối comp dùng redux store với react router dom
+export default connect(mapStateToProps)(Main);
