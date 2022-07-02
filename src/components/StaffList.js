@@ -26,6 +26,24 @@ import { Link } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 
+// Hằng số dùng nhiều lần
+const MIN_INPUT_LIMIT_I = 1;
+const MIN_INPUT_LIMIT_II = 3;
+const MAX_INPUT_LIMIT_I = 10;
+const MAX_INPUT_LIMIT_II = 30;
+
+// Điều kiện validation
+const requireValue = (value) => value && value.length;
+const maxLengthValue = (length) => (value) =>
+  !value || value.length <= length || isNaN(Number(value));
+const minLengthValue = (length) => (value) =>
+  value && value.length >= length && isNaN(Number(value));
+const isNumberBiggerLimit = (maxLimit) => (value) =>
+  !isNaN(Number(value)) && value >= MIN_INPUT_LIMIT_I && value <= maxLimit;
+
+// const isCharValue = (value) => isNaN(Number(value));
+const isDepValid = (value) => value && value.length && value !== "Select";
+
 class StaffList extends Component {
   constructor(props) {
     super(props);
@@ -92,18 +110,9 @@ class StaffList extends Component {
     this.setState({
       staffList: [...this.state.staffList, newStaff],
     });
-    // console.log("newStaff:", newStaff);
+    alert(JSON.stringify(newStaff));
     this.toggleModal();
   };
-
-  customDateControl = (props) => (
-    <Input
-      type="date"
-      className="form-control"
-      id={`${props.id}`}
-      name={`${props.name}`}
-    />
-  );
 
   render() {
     return (
@@ -151,7 +160,7 @@ class StaffList extends Component {
           <ModalBody>
             <LocalForm onSubmit={(value) => this.addNewStaff(value)}>
               {/* FORM ITEM nameInput*/}
-              <Row className="form-group">
+              <Row className="form-group mb-2">
                 <Label md={4} htmlFor="nameInput">
                   Họ tên:
                 </Label>
@@ -161,11 +170,24 @@ class StaffList extends Component {
                     id="nameInput"
                     name="name"
                     className="form-control"
+                    validators={{
+                      minLengthValue: minLengthValue(MIN_INPUT_LIMIT_II),
+                      maxLengthValue: maxLengthValue(MAX_INPUT_LIMIT_II),
+                    }}
+                  />
+                  <Errors
+                    className="text-danger"
+                    model=".name"
+                    show="touched"
+                    messages={{
+                      minLengthValue: `Nhập kí tự ngắn hơn ${MIN_INPUT_LIMIT_II} kí tự`,
+                      maxLengthValue: `Nhập kí tự dài hơn ${MAX_INPUT_LIMIT_II} kí tự`,
+                    }}
                   />
                 </Col>
               </Row>
               {/* FORM ITEM birthInput*/}
-              <Row className="form-group">
+              <Row className="form-group mb-2">
                 <Label md={4} htmlFor="birthInput">
                   Ngày sinh:
                 </Label>
@@ -180,7 +202,7 @@ class StaffList extends Component {
                 </Col>
               </Row>
               {/* FORM ITEM depInput*/}
-              <Row className="form-group">
+              <Row className="form-group mb-2">
                 <Label md={4} htmlFor="depInput">
                   Phòng ban:
                 </Label>
@@ -190,6 +212,9 @@ class StaffList extends Component {
                     id="depInput"
                     name="department"
                     className="form-control"
+                    validators={{
+                      isDepValid,
+                    }}
                   >
                     <option>Select</option>
                     <option>Sale</option>
@@ -198,10 +223,18 @@ class StaffList extends Component {
                     <option>IT</option>
                     <option>Finance</option>
                   </Control.select>
+                  <Errors
+                    className="text-danger"
+                    model=".department"
+                    show="touched"
+                    messages={{
+                      isDepValid: "Không hợp lệ",
+                    }}
+                  />
                 </Col>
               </Row>
               {/* FORM ITEM scaleInput*/}
-              <Row className="form-group">
+              <Row className="form-group mb-2">
                 <Label md={4} htmlFor="scaleInput">
                   Hệ số lương:
                 </Label>
@@ -211,11 +244,23 @@ class StaffList extends Component {
                     id="scaleInput"
                     name="salaryScale"
                     className="form-control"
+                    validators={{
+                      isNumberBiggerLimit:
+                        isNumberBiggerLimit(MAX_INPUT_LIMIT_I),
+                    }}
+                  />
+                  <Errors
+                    className="text-danger"
+                    model=".salaryScale"
+                    show="touched"
+                    messages={{
+                      isNumberBiggerLimit: `Nhập số từ ${MIN_INPUT_LIMIT_I} đến ${MAX_INPUT_LIMIT_I}`,
+                    }}
                   />
                 </Col>
               </Row>
               {/* FORM ITEM OTInput*/}
-              <Row className="form-group">
+              <Row className="form-group mb-2">
                 <Label md={4} htmlFor="OTInput">
                   Ngày làm thêm:
                 </Label>
@@ -225,11 +270,23 @@ class StaffList extends Component {
                     id="OTInput"
                     name="overTime"
                     className="form-control"
+                    validators={{
+                      isNumberBiggerLimit:
+                        isNumberBiggerLimit(MAX_INPUT_LIMIT_II),
+                    }}
+                  />
+                  <Errors
+                    className="text-danger"
+                    model=".overTime"
+                    show="touched"
+                    messages={{
+                      isNumberBiggerLimit: `Nhập số từ ${MIN_INPUT_LIMIT_I} đến ${MAX_INPUT_LIMIT_II}`,
+                    }}
                   />
                 </Col>
               </Row>
               {/* FORM ITEM dayOffInput*/}
-              <Row className="form-group">
+              <Row className="form-group mb-2">
                 <Label md={4} htmlFor="dayOffInput">
                   Số ngày nghỉ:
                 </Label>
@@ -239,11 +296,23 @@ class StaffList extends Component {
                     id="OTInput"
                     name="annualLeave"
                     className="form-control"
+                    validators={{
+                      isNumberBiggerLimit:
+                        isNumberBiggerLimit(MAX_INPUT_LIMIT_II),
+                    }}
+                  />
+                  <Errors
+                    className="text-danger"
+                    model=".annualLeave"
+                    show="touched"
+                    messages={{
+                      isNumberBiggerLimit: `Nhập số từ ${MIN_INPUT_LIMIT_I} đến ${MAX_INPUT_LIMIT_II}`,
+                    }}
                   />
                 </Col>
               </Row>
               {/* FORM ITEM startInput*/}
-              <Row className="form-group">
+              <Row className="form-group mb-2">
                 <Label md={4} htmlFor="startInput">
                   Ngày vào công ty:
                 </Label>
