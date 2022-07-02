@@ -1,5 +1,6 @@
 //RJS101x_asm3_honglcfx16049_PART_1
 import React, { Component } from "react";
+import "react-datepicker/dist/react-datepicker.css";
 import {
   Card,
   CardBody,
@@ -18,6 +19,8 @@ import {
   Row,
 } from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
+import DatePicker from "react-datepicker";
+import dateFormat from "dateformat";
 import { Link } from "react-router-dom";
 
 import Header from "./Header";
@@ -29,6 +32,8 @@ class StaffList extends Component {
     this.state = {
       staffList: this.props.staffList,
       isModalOpen: false,
+      doB: "",
+      startDate: "",
     };
   }
 
@@ -77,11 +82,17 @@ class StaffList extends Component {
   addNewStaff = (value) => {
     // Thêm thuộc tính id và image
     const id = Math.floor(Math.random() * 999) + 100;
-    const newStaff = { ...value, image: "/assets/images/alberto.png", id: id };
-    console.log("newStaff:", newStaff);
+    const newStaff = {
+      ...value,
+      image: "/assets/images/alberto.png",
+      id: id,
+      doB: dateFormat(this.state.doB, "dd/mm/yyyy"),
+      startDate: dateFormat(this.state.startDate, "dd/mm/yyyy"),
+    };
     this.setState({
       staffList: [...this.state.staffList, newStaff],
     });
+    // console.log("newStaff:", newStaff);
     this.toggleModal();
   };
 
@@ -159,16 +170,12 @@ class StaffList extends Component {
                   Ngày sinh:
                 </Label>
                 <Col md={8}>
-                  <Control
-                    model=".doB"
+                  <DatePicker
                     id="birthInput"
                     name="doB"
-                    // className="form-control"
-                    component={this.customDateControl}
-                    controlProps={{
-                      name: "doB",
-                      id: "birthInput",
-                    }}
+                    className="form-control"
+                    selected={this.state.doB}
+                    onChange={(date) => this.setState({ doB: date })}
                   />
                 </Col>
               </Row>
@@ -241,16 +248,12 @@ class StaffList extends Component {
                   Ngày vào công ty:
                 </Label>
                 <Col md={8}>
-                  <Control
-                    model=".startDate"
-                    // id="startInput"
-                    // name="startDate"
-                    // className="form-control"
-                    component={this.customDateControl}
-                    controlProps={{
-                      name: "startDate",
-                      id: "startInput",
-                    }}
+                  <DatePicker
+                    id="startInput"
+                    name="startDate"
+                    className="form-control"
+                    selected={this.state.startDate}
+                    onChange={(date) => this.setState({ startDate: date })}
                   />
                 </Col>
               </Row>
