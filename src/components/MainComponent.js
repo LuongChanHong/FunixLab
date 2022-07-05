@@ -10,6 +10,8 @@ import Contact from "./Contact.js";
 import Home from "./Home.js";
 import DishDetail from "./DishDetail.js";
 
+import { addCommentAction } from "../redux/ActionCreators";
+
 // Redux
 const mapStateToProps = (state) => {
   return {
@@ -19,6 +21,13 @@ const mapStateToProps = (state) => {
     promotionList: state.promotionList,
   };
 };
+
+// Redux action
+const mapDispatchToProps = (dispatch) => ({
+  // Hàm gọi dispatch để tạo ra action bên trong dispatch
+  addCommentMethod: (dishId, rating, author, comment) =>
+    dispatch(addCommentAction(dishId, rating, author, comment)),
+});
 
 class MainComponent extends Component {
   constructor(props) {
@@ -34,6 +43,8 @@ class MainComponent extends Component {
           comments={this.props.commentList.filter(
             (cmt) => cmt.dishId == dishId
           )}
+          // Redux action
+          addCommentMethod={this.props.addCommentMethod}
         />
       );
     };
@@ -76,4 +87,4 @@ class MainComponent extends Component {
 }
 
 // Kết nối comp dùng redux với react router dom
-export default connect(mapStateToProps)(MainComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(MainComponent);
