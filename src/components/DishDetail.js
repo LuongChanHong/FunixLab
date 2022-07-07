@@ -18,6 +18,8 @@ import {
 import { Link } from "react-router-dom";
 import { LocalForm, Control } from "react-redux-form";
 
+import LoadingSpinner from "./LoadingSpinner.js";
+
 class CommentForm extends Component {
   constructor(props) {
     super(props);
@@ -145,7 +147,17 @@ function renderDishDetail(dish) {
 
 const DishDetail = (props) => {
   let selectedDish = props.dish;
-  if (selectedDish != null) {
+  if (props.isLoading) {
+    return <LoadingSpinner />;
+  } else if (props.errmess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{props.errmess}</h4>
+        </div>
+      </div>
+    );
+  } else if (selectedDish != null) {
     return (
       <section className="container">
         <div className="row">

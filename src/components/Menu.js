@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Media,
   Card,
   CardImg,
   CardImgOverlay,
@@ -11,8 +10,8 @@ import {
   BreadcrumbItem,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-// import { DISHES } from "../shared/dishes.js";
-// import DishDetail from "./DishDetail";
+
+import LoadingSpinner from "./LoadingSpinner.js";
 
 function RenderMenuItem({ dish }) {
   /* truyền dish id lại cho MainComponent qua hàm onClick của props */
@@ -29,7 +28,7 @@ function RenderMenuItem({ dish }) {
 }
 
 const Menu = (props) => {
-  let menu = props.dishList.map((dish) => {
+  let menu = props.dishList.dishes.map((dish) => {
     return (
       <div key={dish.id} className="col-12 col-md-5 m-1">
         <RenderMenuItem dish={dish} />
@@ -37,26 +36,38 @@ const Menu = (props) => {
     );
   });
 
-  return (
-    <section className="container">
-      <div className="row">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/home">Home</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>
-            <Link to="/menu">Menu</Link>
-          </BreadcrumbItem>
-        </Breadcrumb>
-        <div className="col-12">
-          <h3>Menu</h3>
-          <hr />
+  if (props.dishList.isLoading) {
+    return <LoadingSpinner />;
+  } else if (props.dishList.errmess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{props.dishList.errmess}</h4>
         </div>
       </div>
+    );
+  } else {
+    return (
+      <section className="container">
+        <div className="row">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/home">Home</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>
+              <Link to="/menu">Menu</Link>
+            </BreadcrumbItem>
+          </Breadcrumb>
+          <div className="col-12">
+            <h3>Menu</h3>
+            <hr />
+          </div>
+        </div>
 
-      <div className="row">{menu}</div>
-    </section>
-  );
+        <div className="row">{menu}</div>
+      </section>
+    );
+  }
 };
 
 export default Menu;

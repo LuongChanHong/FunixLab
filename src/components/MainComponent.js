@@ -10,7 +10,11 @@ import Contact from "./Contact.js";
 import Home from "./Home.js";
 import DishDetail from "./DishDetail.js";
 
-import { addCommentAction } from "../redux/ActionCreators";
+import {
+  addCommentAction,
+  addDishesAction,
+  fetchDishesAction,
+} from "../redux/ActionCreators";
 
 // Redux
 const mapStateToProps = (state) => {
@@ -27,6 +31,10 @@ const mapDispatchToProps = (dispatch) => ({
   // Hàm gọi dispatch để tạo ra action bên trong dispatch
   addCommentMethod: (dishId, rating, author, comment) =>
     dispatch(addCommentAction(dishId, rating, author, comment)),
+  // redux thunk
+  fetchDishesMethod: () => {
+    dispatch(fetchDishesAction());
+  },
 });
 
 class MainComponent extends Component {
@@ -34,25 +42,44 @@ class MainComponent extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    console.log("componentDidMount");
+    // gọi fetchDishesAction để lấy dish list và dispath vào redux store
+    this.props.fetchDishesMethod();
+  }
+
   render() {
     const DishWithId = () => {
       let { dishId } = useParams();
       return (
         <DishDetail
-          dish={this.props.dishList.find((dish) => dish.id == dishId)}
+          dish={this.props.dishList.dishes.find((dish) => dish.id == dishId)}
           comments={this.props.commentList.filter(
             (cmt) => cmt.dishId == dishId
           )}
           // Redux action
           addCommentMethod={this.props.addCommentMethod}
+          // redux thunk
+          isLoading={this.props.dishList.isLoading}
+          errMess={this.props.dishList.errmess}
         />
       );
     };
 
     const HomeCompWithProps = () => {
+      console.log("this.props.dishList:", this.props.dishList);
+      // console.log("this.props.leaderList:", this.props.leaderList);
+
       return (
         <Home
-          dish={this.props.dishList.filter((dish) => dish.featured == true)[0]}
+          dish={
+            this.props.dishList.dishes.filter(
+              (dish) => dish.featured == true
+            )[0]
+          }
+          // redux thunk
+          dishesLoading={this.props.dishList.isLoading}
+          dishesErrMess={this.props.dishList.errmess}
           promotion={
             this.props.promotionList.filter(
               (promo) => promo.featured == true
