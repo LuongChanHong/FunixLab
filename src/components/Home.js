@@ -9,6 +9,7 @@ import {
 } from "reactstrap";
 
 import LoadingSpinner from "./LoadingSpinner.js";
+import { baseUrl } from "../shared/baseUrl.js";
 
 function RenderCard({ item, isLoading, errmess }) {
   if (isLoading) {
@@ -18,7 +19,7 @@ function RenderCard({ item, isLoading, errmess }) {
   } else {
     return (
       <Card>
-        <CardImg src={item.image} alt={item.name} />
+        <CardImg src={baseUrl + item.image} alt={item.name} />
         <CardBody>
           <CardTitle>{item.name}</CardTitle>
           {item.designation ? (
@@ -46,7 +47,6 @@ function RenderCard({ item, isLoading, errmess }) {
 }
 
 function Home(props) {
-  console.log("props:", props);
   return (
     <div className="container">
       <div className="row align-items-start">
@@ -58,7 +58,11 @@ function Home(props) {
           />
         </div>
         <div className="col-4 my-2">
-          <RenderCard item={props.promotion} />
+          <RenderCard
+            item={props.promotion}
+            isLoading={props.promosLoading}
+            errmess={props.promosErrMess}
+          />
         </div>
         <div className="col-4 my-2">
           <RenderCard item={props.leader} />

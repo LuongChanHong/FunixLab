@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import { LocalForm, Control } from "react-redux-form";
 
 import LoadingSpinner from "./LoadingSpinner.js";
+import { baseUrl } from "../shared/baseUrl.js";
 
 class CommentForm extends Component {
   constructor(props) {
@@ -136,7 +137,7 @@ function renderComment(comments) {
 function renderDishDetail(dish) {
   return (
     <Card>
-      <CardImg width="100%" src={`${dish.image}`} alt={dish.name} />
+      <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
       <CardBody>
         <CardTitle>{dish.name}</CardTitle>
         <CardText>{dish.description}</CardText>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import { Route, Redirect, Switch } from "react-router-dom";
 import { Routes, Route, useParams, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+// import { action } from "react-redux-form";
 
 import Menu from "./Menu.js";
 import Header from "./Header.js";
@@ -12,8 +13,9 @@ import DishDetail from "./DishDetail.js";
 
 import {
   addCommentAction,
-  addDishesAction,
   fetchDishesAction,
+  fetchPromosAction,
+  fetchCommentListAction,
 } from "../redux/ActionCreators";
 
 // Redux
@@ -35,6 +37,15 @@ const mapDispatchToProps = (dispatch) => ({
   fetchDishesMethod: () => {
     dispatch(fetchDishesAction());
   },
+  fetchPromosMethod: () => {
+    dispatch(fetchPromosAction());
+  },
+  fetchCommentListMethod: () => {
+    dispatch(fetchCommentListAction());
+  },
+  // resetFeedBackForm: () => {
+  //   dispatch(action.reset("feedback"));
+  // },
 });
 
 class MainComponent extends Component {
@@ -43,9 +54,10 @@ class MainComponent extends Component {
   }
 
   componentDidMount() {
-    console.log("componentDidMount");
     // gọi fetchDishesAction để lấy dish list và dispath vào redux store
     this.props.fetchDishesMethod();
+    this.props.fetchCommentListMethod();
+    this.props.fetchPromosMethod();
   }
 
   render() {
@@ -54,9 +66,10 @@ class MainComponent extends Component {
       return (
         <DishDetail
           dish={this.props.dishList.dishes.find((dish) => dish.id == dishId)}
-          comments={this.props.commentList.filter(
+          comments={this.props.commentList.cmts.filter(
             (cmt) => cmt.dishId == dishId
           )}
+          commentListErrMess={this.props.commentList.errmess}
           // Redux action
           addCommentMethod={this.props.addCommentMethod}
           // redux thunk
@@ -67,9 +80,6 @@ class MainComponent extends Component {
     };
 
     const HomeCompWithProps = () => {
-      console.log("this.props.dishList:", this.props.dishList);
-      // console.log("this.props.leaderList:", this.props.leaderList);
-
       return (
         <Home
           dish={
@@ -81,10 +91,13 @@ class MainComponent extends Component {
           dishesLoading={this.props.dishList.isLoading}
           dishesErrMess={this.props.dishList.errmess}
           promotion={
-            this.props.promotionList.filter(
+            this.props.promotionList.promos.filter(
               (promo) => promo.featured == true
             )[0]
           }
+          // redux thunk
+          promosLoading={this.props.promotionList.isLoading}
+          promosErrMess={this.props.promotionList.errmess}
           leader={
             this.props.leaderList.filter((lead) => lead.featured == true)[0]
           }
