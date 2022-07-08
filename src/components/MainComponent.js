@@ -12,7 +12,7 @@ import Home from "./Home.js";
 import DishDetail from "./DishDetail.js";
 
 import {
-  addCommentAction,
+  postCommentAction,
   fetchDishesAction,
   fetchPromosAction,
   fetchCommentListAction,
@@ -31,8 +31,8 @@ const mapStateToProps = (state) => {
 // Redux action
 const mapDispatchToProps = (dispatch) => ({
   // Hàm gọi dispatch để tạo ra action bên trong dispatch
-  addCommentMethod: (dishId, rating, author, comment) =>
-    dispatch(addCommentAction(dishId, rating, author, comment)),
+  postCommentMethod: (dishId, rating, author, comment) =>
+    dispatch(postCommentAction(dishId, rating, author, comment)),
   // redux thunk
   fetchDishesMethod: () => {
     dispatch(fetchDishesAction());
@@ -71,7 +71,7 @@ class MainComponent extends Component {
           )}
           commentListErrMess={this.props.commentList.errmess}
           // Redux action
-          addCommentMethod={this.props.addCommentMethod}
+          postCommentMethod={this.props.postCommentMethod}
           // redux thunk
           isLoading={this.props.dishList.isLoading}
           errMess={this.props.dishList.errmess}

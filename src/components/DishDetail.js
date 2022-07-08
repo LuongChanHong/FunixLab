@@ -35,7 +35,7 @@ class CommentForm extends Component {
 
   // Redux action
   handleSubmitComment = (value) => {
-    this.props.addCommentMethod(
+    this.props.postCommentMethod(
       this.props.dishId,
       value.rating,
       value.author,
@@ -180,7 +180,7 @@ const DishDetail = (props) => {
           </div>
           <div className="col-12 col-md-5 m-1">
             <CommentForm
-              addComment={props.addComment}
+              postCommentMethod={props.postCommentMethod}
               dishId={selectedDish.id}
             />
             {renderComment(props.comments)}

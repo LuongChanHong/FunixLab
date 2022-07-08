@@ -4,15 +4,51 @@ import { DISHES } from "../shared/dishes.js";
 
 // COMMENT ACTION
 
-export const addCommentAction = (dishId, rating, author, comment) => ({
+export const addCommentAction = (comment) => ({
   type: ActionTypes.ADD_COMMENT,
-  payload: {
-    dishId: dishId,
-    rating: rating,
-    author: author,
-    comment: comment,
-  },
+  payload: comment,
 });
+
+// redux thunk
+export const postCommentAction =
+  (dishId, rating, author, comment) => (dispatch) => {
+    const newCmt = {
+      dishId: dishId,
+      rating: rating,
+      author: author,
+      comment: comment,
+    };
+    newCmt.date = new Date().toISOString();
+    return fetch(baseUrl + "comments", {
+      method: "POST",
+      body: JSON.stringify(newCmt),
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            let err = new Error(
+              "ERROR::" + response.status + ":" + response.statusText
+            );
+            err.response = response;
+            throw err;
+          }
+        },
+        (error) => {
+          let errmess = new Error(error.message);
+          throw errmess;
+        }
+      )
+      .then((response) => response.json())
+      .then((cmt) => dispatch(addCommentAction(cmt)))
+      .catch((error) => {
+        console.log("Post cmt err:", error.message);
+        alert("Comment cannot posted\nERROR::" + error.message);
+      });
+  };
 
 export const commentListFailedAction = (errmess) => ({
   type: ActionTypes.COMMENT_LIST_FAILED,
@@ -24,6 +60,7 @@ export const addCommentListAction = (cmtList) => ({
   payload: cmtList,
 });
 
+// redux thunk
 export const fetchCommentListAction = () => (dispatch) => {
   return fetch(baseUrl + "comments")
     .then(
@@ -68,7 +105,7 @@ export const addDishesAction = (dishes) => ({
 export const fetchDishesAction = () => (dispatch) => {
   dispatch(dishesLoadingAction(true));
 
-  return fetch(baseUrl + "dishesDuma")
+  return fetch(baseUrl + "dishes")
     .then(
       (response) => {
         if (response.ok) {
