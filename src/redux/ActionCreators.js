@@ -26,8 +26,28 @@ export const addCommentListAction = (cmtList) => ({
 
 export const fetchCommentListAction = () => (dispatch) => {
   return fetch(baseUrl + "comments")
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          let err = new Error(
+            "ERROR::" + response.status + ":" + response.statusText
+          );
+          err.response = response;
+          throw err;
+        }
+      },
+      (error) => {
+        let errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
     .then((response) => response.json())
-    .then((cmtList) => dispatch(addCommentListAction(cmtList)));
+    .then((cmtList) => dispatch(addCommentListAction(cmtList)))
+    .catch((error) => {
+      dispatch(commentListFailedAction(error.message));
+    });
 };
 
 // DISHES ACTION
@@ -48,9 +68,29 @@ export const addDishesAction = (dishes) => ({
 export const fetchDishesAction = () => (dispatch) => {
   dispatch(dishesLoadingAction(true));
 
-  return fetch(baseUrl + "dishes")
+  return fetch(baseUrl + "dishesDuma")
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          let err = new Error(
+            "ERROR::" + response.status + ":" + response.statusText
+          );
+          err.response = response;
+          throw err;
+        }
+      },
+      (error) => {
+        let errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
     .then((response) => response.json())
-    .then((dishes) => dispatch(addDishesAction(dishes)));
+    .then((dishes) => dispatch(addDishesAction(dishes)))
+    .catch((error) => {
+      dispatch(dishesFailedAction(error.message));
+    });
 };
 
 // PROMO ACTION
@@ -72,6 +112,26 @@ export const fetchPromosAction = () => (dispatch) => {
   dispatch(promosLoadingAction(true));
 
   return fetch(baseUrl + "promotions")
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          let err = new Error(
+            "ERROR::" + response.status + ":" + response.statusText
+          );
+          err.response = response;
+          throw err;
+        }
+      },
+      (error) => {
+        let errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
     .then((response) => response.json())
-    .then((promos) => dispatch(addPromosAction(promos)));
+    .then((promos) => dispatch(addPromosAction(promos)))
+    .catch((error) => {
+      dispatch(promosFailedAction(error.message));
+    });
 };
