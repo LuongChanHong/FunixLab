@@ -3,13 +3,9 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Button,
-  Form,
-  FormGroup,
   Label,
-  Input,
   Col,
   Row,
-  FormFeedback,
 } from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
@@ -24,86 +20,15 @@ const validEmail = (value) =>
 class Contact extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   firstName: "",
-    //   lastName: "",
-    //   telNum: "",
-    //   email: "",
-    //   agree: "",
-    //   contactType: "",
-    //   message: "",
-    //   touched: {
-    //     firstName: false,
-    //     lastName: false,
-    //     email: false,
-    //     telNum: false,
-    //   },
-    // };
     this.handleSubmit = this.handleSubmit.bind(this);
-    // this.handleInputChange = this.handleInputChange.bind(this);
-    // this.handleBlur = this.handleBlur.bind(this);
   }
 
-  // handleBlur = (field) => (event) => {
-  //   this.setState({ touched: { ...this.state.touched, [field]: true } });
-  // };
-
-  // validation(firstName, lastName, email, telNum) {
-  //   const errors = {
-  //     firstName: "",
-  //     lastName: "",
-  //     telNum: "",
-  //     email: "",
-  //   };
-  //   const regular = /^\d+$/; // tất cả kí tự trong string phải là số
-  //   if (this.state.touched.firstName && firstName.length < 3) {
-  //     errors.firstName = "first name should be >= 3 character";
-  //   } else if (this.state.touched.firstName && firstName.length > 10) {
-  //     errors.firstName = "first name should be <= 10 character";
-  //   }
-
-  //   if (this.state.touched.lastName && lastName.length < 3) {
-  //     errors.lastName = "last name should be >= 3 character";
-  //   } else if (this.state.touched.lastName && lastName.length > 10) {
-  //     errors.lastName = "last name should be <= 10 character";
-  //   }
-
-  //   if (this.state.touched.telNum && !regular.test(telNum)) {
-  //     errors.telNum = "tel number should contain only number";
-  //   }
-
-  //   if (
-  //     this.state.touched.email &&
-  //     email.split("").filter((item) => item === "@").length !== 1
-  //   ) {
-  //     errors.email = "email should contain a @";
-  //   }
-
-  //   return errors;
-  // }
-
-  // handleInputChange(event) {
-  //   const target = event.target;
-  //   const value = target.type === "checkbox" ? target.checked : target.value;
-  //   const name = target.name;
-  //   this.setState({ [name]: value });
-  // }
-
   handleSubmit(value) {
-    // console.log("State: ", JSON.stringify(value));
     console.log("State: ", value);
     alert("State: " + JSON.stringify(value));
-    // alert("State: " + value);
   }
 
   render() {
-    // const errors = this.validation(
-    //   this.state.firstName,
-    //   this.state.lastName,
-    //   this.state.email,
-    //   this.state.telNum
-    // );
-
     return (
       <div className="container">
         <div className="row">

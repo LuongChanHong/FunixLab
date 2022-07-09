@@ -1,12 +1,6 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect } from "react";
 // import { Route, Redirect, Switch } from "react-router-dom";
-import {
-  Routes,
-  Route,
-  useParams,
-  useLocation,
-  withRouter,
-} from "react-router-dom";
+import { Routes, Route, useParams, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
@@ -67,8 +61,8 @@ const MainComponent = (props) => {
     let { dishId } = useParams();
     return (
       <DishDetail
-        dish={props.dishList.dishes.find((dish) => dish.id == dishId)}
-        comments={props.commentList.cmts.filter((cmt) => cmt.dishId == dishId)}
+        dish={props.dishList.dishes.find((dish) => dish.id === dishId)}
+        comments={props.commentList.cmts.filter((cmt) => cmt.dishId === dishId)}
         commentListErrMess={props.commentList.errmess}
         // Redux action
         postCommentMethod={props.postCommentMethod}
@@ -82,19 +76,19 @@ const MainComponent = (props) => {
   const HomeCompWithProps = () => {
     return (
       <Home
-        dish={props.dishList.dishes.filter((dish) => dish.featured == true)[0]}
+        dish={props.dishList.dishes.filter((dish) => dish.featured === true)[0]}
         // redux thunk
         dishesLoading={props.dishList.isLoading}
         dishesErrMess={props.dishList.errmess}
         promotion={
           props.promotionList.promos.filter(
-            (promo) => promo.featured == true
+            (promo) => promo.featured === true
           )[0]
         }
         // redux thunk
         promosLoading={props.promotionList.isLoading}
         promosErrMess={props.promotionList.errmess}
-        leader={props.leaderList.filter((lead) => lead.featured == true)[0]}
+        leader={props.leaderList.filter((lead) => lead.featured === true)[0]}
       />
     );
   };
