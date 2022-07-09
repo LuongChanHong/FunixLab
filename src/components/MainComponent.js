@@ -1,8 +1,14 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 // import { Route, Redirect, Switch } from "react-router-dom";
-import { Routes, Route, useParams, withRouter } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useParams,
+  useLocation,
+  withRouter,
+} from "react-router-dom";
 import { connect } from "react-redux";
-// import { action } from "react-redux-form";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import Menu from "./Menu.js";
 import Header from "./Header.js";
@@ -48,83 +54,74 @@ const mapDispatchToProps = (dispatch) => ({
   // },
 });
 
-class MainComponent extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
+const MainComponent = (props) => {
+  const location = useLocation();
+  useEffect(() => {
     // gọi fetchDishesAction để lấy dish list và dispath vào redux store
-    this.props.fetchDishesMethod();
-    this.props.fetchCommentListMethod();
-    this.props.fetchPromosMethod();
-  }
+    props.fetchDishesMethod();
+    props.fetchCommentListMethod();
+    props.fetchPromosMethod();
+  }, []);
 
-  render() {
-    const DishWithId = () => {
-      let { dishId } = useParams();
-      return (
-        <DishDetail
-          dish={this.props.dishList.dishes.find((dish) => dish.id == dishId)}
-          comments={this.props.commentList.cmts.filter(
-            (cmt) => cmt.dishId == dishId
-          )}
-          commentListErrMess={this.props.commentList.errmess}
-          // Redux action
-          postCommentMethod={this.props.postCommentMethod}
-          // redux thunk
-          isLoading={this.props.dishList.isLoading}
-          errMess={this.props.dishList.errmess}
-        />
-      );
-    };
-
-    const HomeCompWithProps = () => {
-      return (
-        <Home
-          dish={
-            this.props.dishList.dishes.filter(
-              (dish) => dish.featured == true
-            )[0]
-          }
-          // redux thunk
-          dishesLoading={this.props.dishList.isLoading}
-          dishesErrMess={this.props.dishList.errmess}
-          promotion={
-            this.props.promotionList.promos.filter(
-              (promo) => promo.featured == true
-            )[0]
-          }
-          // redux thunk
-          promosLoading={this.props.promotionList.isLoading}
-          promosErrMess={this.props.promotionList.errmess}
-          leader={
-            this.props.leaderList.filter((lead) => lead.featured == true)[0]
-          }
-        />
-      );
-    };
-
+  const DishWithId = () => {
+    let { dishId } = useParams();
     return (
-      <section className="container">
-        <Header />
-        <Routes>
-          <Route exact path="/home" element={<HomeCompWithProps />} />
-          <Route exact path="/contactus" element={<Contact />} />
-          <Route
-            exact
-            path="/menu"
-            element={<Menu dishList={this.props.dishList} />}
-          />
-          <Route path="/menu/:dishId" element={<DishWithId />} />
-          <Route path="*" element={<HomeCompWithProps />} />
-        </Routes>
-
-        <Footer />
-      </section>
+      <DishDetail
+        dish={props.dishList.dishes.find((dish) => dish.id == dishId)}
+        comments={props.commentList.cmts.filter((cmt) => cmt.dishId == dishId)}
+        commentListErrMess={props.commentList.errmess}
+        // Redux action
+        postCommentMethod={props.postCommentMethod}
+        // redux thunk
+        isLoading={props.dishList.isLoading}
+        errMess={props.dishList.errmess}
+      />
     );
-  }
-}
+  };
+
+  const HomeCompWithProps = () => {
+    return (
+      <Home
+        dish={props.dishList.dishes.filter((dish) => dish.featured == true)[0]}
+        // redux thunk
+        dishesLoading={props.dishList.isLoading}
+        dishesErrMess={props.dishList.errmess}
+        promotion={
+          props.promotionList.promos.filter(
+            (promo) => promo.featured == true
+          )[0]
+        }
+        // redux thunk
+        promosLoading={props.promotionList.isLoading}
+        promosErrMess={props.promotionList.errmess}
+        leader={props.leaderList.filter((lead) => lead.featured == true)[0]}
+      />
+    );
+  };
+
+  return (
+    <section className="container">
+      <Header />
+      {/* React transition group */}
+      <TransitionGroup>
+        <CSSTransition key={location.key} classNames="page" timeout={300}>
+          <Routes>
+            <Route exact path="/home" element={<HomeCompWithProps />} />
+            <Route exact path="/contactus" element={<Contact />} />
+            <Route
+              exact
+              path="/menu"
+              element={<Menu dishList={props.dishList} />}
+            />
+            <Route path="/menu/:dishId" element={<DishWithId />} />
+            <Route path="*" element={<HomeCompWithProps />} />
+          </Routes>
+        </CSSTransition>
+      </TransitionGroup>
+      <Footer />
+    </section>
+  );
+};
 
 // Kết nối comp dùng redux với react router dom
 export default connect(mapStateToProps, mapDispatchToProps)(MainComponent);
