@@ -61,8 +61,8 @@ const MainComponent = (props) => {
     let { dishId } = useParams();
     return (
       <DishDetail
-        dish={props.dishList.dishes.find((dish) => dish.id === dishId)}
-        comments={props.commentList.cmts.filter((cmt) => cmt.dishId === dishId)}
+        dish={props.dishList.dishes.find((dish) => dish.id == dishId)}
+        comments={props.commentList.cmts.filter((cmt) => cmt.dishId == dishId)}
         commentListErrMess={props.commentList.errmess}
         // Redux action
         postCommentMethod={props.postCommentMethod}

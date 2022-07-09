@@ -17,6 +17,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { LocalForm, Control } from "react-redux-form";
+import { FadeTransform, Fade, Stagger } from "react-animation-components";
 
 import LoadingSpinner from "./LoadingSpinner.js";
 import { baseUrl } from "../shared/baseUrl.js";
@@ -118,17 +119,19 @@ function renderComment(comments) {
   return comments?.map((cmt) => {
     return (
       <div key={cmt.id} className="my-2">
-        <Card>
-          <CardBody>
-            <CardTitle className="text-danger">{cmt.author}</CardTitle>
-            <CardText>{cmt.comment}</CardText>
-            <CardText className="text-danger">
-              {new Intl.DateTimeFormat("en-US").format(
-                new Date(Date.parse(cmt.date))
-              )}
-            </CardText>
-          </CardBody>
-        </Card>
+        <Fade in>
+          <Card>
+            <CardBody>
+              <CardTitle className="text-danger">{cmt.author}</CardTitle>
+              <CardText>{cmt.comment}</CardText>
+              <CardText className="text-danger">
+                {new Intl.DateTimeFormat("en-US").format(
+                  new Date(Date.parse(cmt.date))
+                )}
+              </CardText>
+            </CardBody>
+          </Card>
+        </Fade>
       </div>
     );
   });
@@ -183,7 +186,7 @@ const DishDetail = (props) => {
               postCommentMethod={props.postCommentMethod}
               dishId={selectedDish.id}
             />
-            {renderComment(props.comments)}
+            <Stagger in>{renderComment(props.comments)}</Stagger>
           </div>
         </div>
       </section>
