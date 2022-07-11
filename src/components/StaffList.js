@@ -55,6 +55,7 @@ class StaffList extends Component {
     };
   }
 
+  // {`/staff/${staff.id}`}
   // Render danh sách staff
   renderStaffList = (list) => {
     return list.map((staff) => (

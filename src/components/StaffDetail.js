@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import dateFormat from "dateformat";
 import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -7,7 +8,9 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 function StaffDetail(props) {
-  let selectedStaff = props.selectedStaff;
+  let { id } = useParams();
+  let selectedStaff = props.staffList.find((staff) => staff.id == id);
+
   return (
     <div className="component_bg">
       <Header />
