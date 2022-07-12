@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -7,7 +7,16 @@ import Salary from "./Salary";
 import StaffList from "./StaffList";
 import StaffDetail from "./StaffDetail";
 
+import { fetchStaffList } from "../redux/actionCreator";
+
+const mapDispatchToProps = (dispatch) => ({
+  getStaffListMethod: () => {
+    dispatch(fetchStaffList());
+  },
+});
+
 const mapStateToProps = (state) => {
+  console.log("list trong mapStateToProps:", state.staffList.staffList);
   return { staffList: state.staffList, departments: state.departments };
 };
 
@@ -16,6 +25,9 @@ const mapStateToProps = (state) => {
 // ======================================================================================
 
 const Main = (props) => {
+  useEffect(() => {
+    props.getStaffListMethod();
+  }, []);
   return (
     <section className="container">
       <Routes>
@@ -25,7 +37,7 @@ const Main = (props) => {
           path="/staff"
           element={
             <StaffList
-              staffList={props.staffList}
+              staffList={props.staffList.staffList}
               staffModel={props.staffModel}
             />
           }
@@ -49,12 +61,16 @@ const Main = (props) => {
           element={<StaffDetail staffList={props.staffList} />}
         />
         {/* Các URL còn lại/ không hợp lệ */}
+        {/* ====================================================================== */}
+        {/* ====================================================================== */}
+        {/* ====================================================================== */}
+
         <Route
           path="*"
           element={
             <StaffList
               staffModel={props.staffModel}
-              staffList={props.staffList}
+              staffList={props.staffList.staffList}
             />
           }
         />
@@ -64,4 +80,4 @@ const Main = (props) => {
 };
 
 // Kết nối comp dùng redux store với react router dom
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

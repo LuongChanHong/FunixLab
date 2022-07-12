@@ -1,5 +1,5 @@
 //RJS101x_asm4_honglcfx16049
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   Card,
@@ -54,6 +54,7 @@ const StaffList = (props) => {
 
   // Render danh sách staff
   const renderStaffList = (list) => {
+    console.log("list render ra UI:", list);
     return list.map((staff) => (
       <div key={staff.id} className="col-sm-6 col-md-4 col-lg-2 my-1">
         <Card>
@@ -66,11 +67,6 @@ const StaffList = (props) => {
         </Card>
       </div>
     ));
-  };
-
-  // HTML sẽ hiện ra khi search không có kết quả
-  const handleStaffListNull = () => {
-    return <h4 className="text-center text-danger">Không tìm thấy</h4>;
   };
 
   // Tìm theo tên nhân viên
