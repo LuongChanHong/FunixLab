@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -33,10 +33,6 @@ const calcuAllStaffSalary = (list) => {
 const Salary = (props) => {
   const [sortedList, setSortedList] = useState(props.staffList);
 
-  useEffect(() => {
-    setSortedList(sortedList);
-  }, [sortedList]);
-
   calcuAllStaffSalary(props.staffList);
 
   const renderList = (list) => {
@@ -44,33 +40,27 @@ const Salary = (props) => {
     return _list;
   };
 
-  // Render staff salary HTML item
-  // const renderSaraly = () => {
-  //   console.log("renderSaraly");
-  //   return
-  // };
-
   // Sort staff list theo option truyền vào
   const sortSalaryByOption = (sortOption) => {
-    let list = [];
+    let list = [...sortedList];
     if (sortOption == "maNV") {
       // Sort theo mã NV
-      list = sortedList.sort((firstItem, secondItem) => {
+      list = list.sort((firstItem, secondItem) => {
         return firstItem.id - secondItem.id;
       });
-      console.log("list sort theo mã nv:", renderList(list));
+      // console.log("list sort theo mã nv:", renderList(list));
     } else if (sortOption == "giamDan") {
       // Sort theo lương giảm dần (cao xuống thấp)
-      list = sortedList.sort((firstItem, secondItem) => {
+      list = list.sort((firstItem, secondItem) => {
         return secondItem.salary - firstItem.salary;
       });
-      console.log("list sort lương giảm dần:", renderList(list));
+      // console.log("list sort lương giảm dần:", renderList(list));
     } else if (sortOption == "tangDan") {
       // Sort theo lương tăng dần (thấp lên cao)
-      list = sortedList.sort((firstItem, secondItem) => {
+      list = list.sort((firstItem, secondItem) => {
         return firstItem.salary - secondItem.salary;
       });
-      console.log("list sort lương tăng dần:", renderList(list));
+      // console.log("list sort lương tăng dần:", renderList(list));
     }
     setSortedList(list);
   };
@@ -103,7 +93,6 @@ const Salary = (props) => {
         <hr />
         {renderInput()}
         <div className="row">
-          {console.log("render")}
           {/* RENDER SALARY LIST */}
           {sortedList.map((staff) => (
             <div key={staff.id} className="col-sm-12 col-md-6 col-lg-4 my-2">
