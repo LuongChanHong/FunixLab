@@ -1,3 +1,5 @@
+//RJS101x_asm4_honglcfx16049
+
 import React, { useEffect } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { connect } from "react-redux";
@@ -16,8 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
-  console.log("list trong mapStateToProps:", state.staffList.staffList);
-  return { staffList: state.staffList, departments: state.departments };
+  return { staffsObject: state.staffList, departments: state.departments };
 };
 
 // ======================================================================================
@@ -37,7 +38,7 @@ const Main = (props) => {
           path="/staff"
           element={
             <StaffList
-              staffList={props.staffList.staffList}
+              staffsObject={props.staffsObject}
               staffModel={props.staffModel}
             />
           }
@@ -55,22 +56,17 @@ const Main = (props) => {
           element={<Departments departments={props.departments} />}
         />
         {/* StaffDetail route*/}
-        {/* {`/staff/:${id}`} */}
         <Route
           path="/staff/:id"
           element={<StaffDetail staffList={props.staffList} />}
         />
         {/* Các URL còn lại/ không hợp lệ */}
-        {/* ====================================================================== */}
-        {/* ====================================================================== */}
-        {/* ====================================================================== */}
-
         <Route
           path="*"
           element={
             <StaffList
               staffModel={props.staffModel}
-              staffList={props.staffList.staffList}
+              staffsObject={props.staffsObject}
             />
           }
         />

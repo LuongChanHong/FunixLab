@@ -1,5 +1,4 @@
-//RJS101x_asm4_honglcfx16049
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   Card,
@@ -24,6 +23,7 @@ import { Link } from "react-router-dom";
 
 import Header from "./Header";
 import Footer from "./Footer";
+import LoadingSpinner from "./LoadingSpinner";
 
 // Hằng số dùng nhiều lần
 const MIN_INPUT_LIMIT_I = 1;
@@ -44,7 +44,7 @@ const isNumberBiggerLimit = (maxLimit) => (value) =>
 const isDepValid = (value) => value && value.length && value !== "Select";
 
 const StaffList = (props) => {
-  const [staffList, setStaffList] = useState(props.staffList);
+  const [staffList, setStaffList] = useState(props.staffsObject.staffList);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [doB, setDoB] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -52,9 +52,12 @@ const StaffList = (props) => {
   const [searchedList, setSearchedList] = useState(null);
   const [isSearchedList, setIsSearchedList] = useState(false);
 
+  // useEffect(() => {
+  //   setStaffList(staffList);
+  // }, [staffList]);
+
   // Render danh sách staff
   const renderStaffList = (list) => {
-    console.log("list render ra UI:", list);
     return list.map((staff) => (
       <div key={staff.id} className="col-sm-6 col-md-4 col-lg-2 my-1">
         <Card>
@@ -147,9 +150,13 @@ const StaffList = (props) => {
         <hr />
         {/* DANH SÁCH NV */}
         <div className="row">
-          {isSearchedList
-            ? renderStaffList(searchedList)
-            : renderStaffList(staffList)}
+          {props.staffsObject.isLoading ? (
+            <LoadingSpinner />
+          ) : isSearchedList ? (
+            renderStaffList(searchedList)
+          ) : (
+            renderStaffList(props.staffsObject.staffList)
+          )}
         </div>
       </div>
       <Footer />
