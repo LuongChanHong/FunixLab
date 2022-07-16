@@ -23,3 +23,4 @@ export const SalaryReducer = (state = initialState, action) => {
       return { ...state };
   }
 };
+/*  */

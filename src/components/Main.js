@@ -95,3 +95,4 @@ const Main = (props) => {
 
 // Kết nối comp dùng redux store với react router dom
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
+/*  */

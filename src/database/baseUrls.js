@@ -6,3 +6,4 @@ export const URL = {
   base: "https://rjs101xbackend.herokuapp.com/",
   departmentStaffs: "https://rjs101xbackend.herokuapp.com/departments/",
 };
+/*  */

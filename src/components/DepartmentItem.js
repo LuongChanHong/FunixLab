@@ -20,3 +20,4 @@ function DepartmentItem(props) {
 }
 
 export default DepartmentItem;
+/*  */

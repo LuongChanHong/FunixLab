@@ -119,3 +119,4 @@ export const fetchData = (param) => (dispatch) => {
       dispatch(failedFunction(error.message));
     });
 };
+/*  */

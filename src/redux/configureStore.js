@@ -16,3 +16,4 @@ export const ConfigureStore = () => {
   const store = createStore(reducer, applyMiddleware(thunk, logger));
   return store;
 };
+/*  */
