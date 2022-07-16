@@ -19,7 +19,7 @@ import LoadingSpinner from "./LoadingSpinner";
 // MAIN FUNCTION
 // ======================================================================================
 const Salary = (props) => {
-  const [salaryList, setSalaryList] = useState(props.salarysObject.salaryList);
+  const [salaryList, setSalaryList] = useState([]);
 
   const propsObject = props.salarysObject;
 
@@ -29,39 +29,33 @@ const Salary = (props) => {
   };
 
   // Sort staff list theo option truyền vào
-  const sortSalaryByOption = (sortOption) => {
-    let list = [...salaryList];
+  const sortSalaryByOption = (sortOption, list) => {
     if (sortOption == "maNV") {
       // Sort theo mã NV
-      list = list.sort((firstItem, secondItem) => {
+      list = [...list].sort((firstItem, secondItem) => {
         return firstItem.id - secondItem.id;
       });
-      console.log("list sort theo mã nv:", TestingRenderList(list));
+      // console.log("list sort theo mã nv:", TestingRenderList(list));
     } else if (sortOption == "giamDan") {
       // Sort theo lương giảm dần (cao xuống thấp)
-      list = list.sort((firstItem, secondItem) => {
+      list = [...list].sort((firstItem, secondItem) => {
         return secondItem.salary - firstItem.salary;
       });
-      console.log("list sort lương giảm dần:", TestingRenderList(list));
+      // console.log("list sort lương giảm dần:", TestingRenderList(list));
     } else if (sortOption == "tangDan") {
       // Sort theo lương tăng dần (thấp lên cao)
-      list = list.sort((firstItem, secondItem) => {
+      list = [...list].sort((firstItem, secondItem) => {
         return firstItem.salary - secondItem.salary;
       });
-      console.log("list sort lương tăng dần:", TestingRenderList(list));
+      // console.log("list sort lương tăng dần:", TestingRenderList(list));
     }
-
     setSalaryList(list);
   };
 
   // Xử lí khi input option thay đổi
   const handleChange = (event) => {
-    console.log("handleChange");
     // Sort staff list theo option truyền vào
-    sortSalaryByOption(event.target.value);
-    if (salaryList.length == 0) {
-      setSalaryList(props.salarysObject.salaryList);
-    }
+    sortSalaryByOption(event.target.value, propsObject.salaryList);
   };
 
   // Render sort option input
@@ -79,7 +73,7 @@ const Salary = (props) => {
   };
 
   // render list đã được sắp xếp
-  const renderSortedList = (list) => {
+  const renderList = (list) => {
     return list.map((staff) => (
       <div key={staff.id} className="col-sm-12 col-md-6 col-lg-4 my-2">
         <Card outline>
@@ -103,18 +97,15 @@ const Salary = (props) => {
 
   // Render kết quả fetch data từ server
   const renderResponeFromServer = () => {
-    // setSalaryList(propsObject.salaryList);
-    console.log("component state list:", salaryList);
-    console.log("props list:", propsObject.salaryList);
     if (propsObject.isLoading) {
       return <LoadingSpinner />;
     } else if (propsObject.errorMessage) {
       return <h4 className="text-danger">{propsObject.errorMessage}</h4>;
       // Trường hợp render list kết quả search
     } else if (salaryList.length != 0) {
-      return <>{renderSortedList(salaryList)}</>;
+      return <>{renderList(salaryList)}</>;
     } else {
-      return <>{renderSortedList(propsObject.salaryList)}</>;
+      return <>{renderList(propsObject.salaryList)}</>;
     }
   };
 
