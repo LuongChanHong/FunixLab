@@ -42,6 +42,7 @@ const Main = (props) => {
     props.getDepartmentListMethod();
     props.getSalaryListMethod();
   }, []);
+
   // ================================
   // RETURN
   // ================================
@@ -74,18 +75,21 @@ const Main = (props) => {
         {/* StaffDetail route*/}
         <Route
           path="/staff/:id"
-          element={<StaffDetail staffList={props.staffList} />}
+          element={
+            <StaffDetail
+              staffList={props.staffsObject.staffList}
+              depmList={props.departmentsObject.depmList}
+            />
+          }
         />
         {/* Các URL còn lại/ không hợp lệ */}
         <Route
           path="*"
           element={
-            // <StaffList
-            //   staffModel={props.staffModel}
-            //   staffsObject={props.staffsObject}
-            // />
-            // <Departments departmentsObject={props.departmentsObject} />
-            <Salary salarysObject={props.salarysObject} />
+            <StaffList
+              staffModel={props.staffModel}
+              staffsObject={props.staffsObject}
+            />
           }
         />
       </Routes>

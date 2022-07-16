@@ -15,7 +15,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import DepartmentItem from "./DepartmentItem";
 import LoadingSpinner from "./LoadingSpinner";
-import { URL } from "../database/baseUrls";
+import { fetchAPI } from "../redux/fetchMethod";
 
 // ======================================================================================
 // MAIN FUNCTION
@@ -31,8 +31,7 @@ function Departments(props) {
 
   // Fetch staff list theo phòng ban từ api
   const fetchStaffOfDepartment = (id) => {
-    fetch(URL.departmentStaffs + id)
-      .then((response) => response.json())
+    fetchAPI("departments/" + id)
       .then((data) => setDepartmentStaffs(data))
       .catch((error) => console.log(error));
   };
