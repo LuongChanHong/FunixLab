@@ -53,29 +53,6 @@ const Salary = (props) => {
 
     setSalaryList(list);
   };
-  // const sortSalaryByOption = (sortOption) => {
-  //   let list = [...salaryList];
-  //   if (sortOption == "maNV") {
-  //     // Sort theo mã NV
-  //     list = list.sort((firstItem, secondItem) => {
-  //       return firstItem.id - secondItem.id;
-  //     });
-  //     console.log("list sort theo mã nv:", TestingRenderList(list));
-  //   } else if (sortOption == "giamDan") {
-  //     // Sort theo lương giảm dần (cao xuống thấp)
-  //     list = list.sort((firstItem, secondItem) => {
-  //       return secondItem.salary - firstItem.salary;
-  //     });
-  //     console.log("list sort lương giảm dần:", TestingRenderList(list));
-  //   } else if (sortOption == "tangDan") {
-  //     // Sort theo lương tăng dần (thấp lên cao)
-  //     list = list.sort((firstItem, secondItem) => {
-  //       return firstItem.salary - secondItem.salary;
-  //     });
-  //     console.log("list sort lương tăng dần:", TestingRenderList(list));
-  //   }
-  //   setSalaryList(list);
-  // };
 
   // Xử lí khi input option thay đổi
   const handleChange = (event) => {
@@ -140,21 +117,6 @@ const Salary = (props) => {
       return <>{renderSortedList(propsObject.salaryList)}</>;
     }
   };
-  // const renderResponeFromServer = () => {
-  //   // setSalaryList(propsObject.salaryList);
-  //   console.log("component state list:", salaryList);
-  //   console.log("props list:", propsObject.salaryList);
-  //   if (propsObject.isLoading) {
-  //     return <LoadingSpinner />;
-  //   } else if (propsObject.errorMessage) {
-  //     return <h4 className="text-danger">{propsObject.errorMessage}</h4>;
-  //     // Trường hợp render list kết quả search
-  //   } else if (salaryList.length != 0) {
-  //     return <>{renderSortedList(salaryList)}</>;
-  //   } else {
-  //     return <>{renderSortedList(propsObject.salaryList)}</>;
-  //   }
-  // };
 
   // ================================
   // RETURN
