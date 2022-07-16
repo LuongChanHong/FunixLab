@@ -32,7 +32,7 @@ const MAX_INPUT_LIMIT_I = 10;
 const MAX_INPUT_LIMIT_II = 30;
 
 // Điều kiện validation
-const requireValue = (value) => value && value.length;
+// const requireValue = (value) => value && value.length;
 const maxLengthValue = (length) => (value) =>
   !value || value.length <= length || isNaN(Number(value));
 const minLengthValue = (length) => (value) =>
@@ -43,6 +43,10 @@ const isNumberBiggerLimit = (maxLimit) => (value) =>
 // const isCharValue = (value) => isNaN(Number(value));
 const isDepValid = (value) => value && value.length && value !== "Select";
 
+// ======================================================================================
+// MAIN FUNCTION
+// ======================================================================================
+
 const StaffList = (props) => {
   const [staffList, setStaffList] = useState(props.staffsObject.staffList);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,6 +55,8 @@ const StaffList = (props) => {
   const [searchInput, setSearchInput] = useState("");
   const [searchedList, setSearchedList] = useState(null);
   const [isSearchedList, setIsSearchedList] = useState(false);
+
+  const propsObject = props.staffsObject;
 
   // useEffect(() => {
   //   setStaffList(staffList);
@@ -110,6 +116,22 @@ const StaffList = (props) => {
     toggleModal();
   };
 
+  // Render kết quả fetch data từ server
+  const renderResponeFromServer = () => {
+    if (propsObject.isLoading) {
+      return <LoadingSpinner />;
+    } else if (propsObject.errorMessage) {
+      return <h4 className="text-danger">{propsObject.errorMessage}</h4>;
+      // Trường hợp render list kết quả search
+    } else if (isSearchedList) {
+      return <>{renderStaffList(searchedList)}</>;
+    } else {
+      return <>{renderStaffList(propsObject.staffList)}</>;
+    }
+  };
+  // ================================
+  // RETURN
+  // ================================
   return (
     <section className="component_bg">
       <Header />
@@ -149,15 +171,7 @@ const StaffList = (props) => {
         )}
         <hr />
         {/* DANH SÁCH NV */}
-        <div className="row">
-          {props.staffsObject.isLoading ? (
-            <LoadingSpinner />
-          ) : isSearchedList ? (
-            renderStaffList(searchedList)
-          ) : (
-            renderStaffList(props.staffsObject.staffList)
-          )}
-        </div>
+        <div className="row">{renderResponeFromServer()}</div>
       </div>
       <Footer />
 

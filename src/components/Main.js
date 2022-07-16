@@ -9,16 +9,27 @@ import Salary from "./Salary";
 import StaffList from "./StaffList";
 import StaffDetail from "./StaffDetail";
 
-import { fetchStaffList } from "../redux/actionCreator";
+import { fetchData } from "../redux/actionCreator";
 
 const mapDispatchToProps = (dispatch) => ({
   getStaffListMethod: () => {
-    dispatch(fetchStaffList());
+    dispatch(fetchData("staffs"));
+  },
+  getDepartmentListMethod: () => {
+    dispatch(fetchData("departments"));
+  },
+  getSalaryListMethod: () => {
+    dispatch(fetchData("staffsSalary"));
   },
 });
 
 const mapStateToProps = (state) => {
-  return { staffsObject: state.staffList, departments: state.departments };
+  return {
+    staffsObject: state.staffList,
+    departmentsObject: state.depmList,
+
+    salarysObject: state.salaryList,
+  };
 };
 
 // ======================================================================================
@@ -28,7 +39,12 @@ const mapStateToProps = (state) => {
 const Main = (props) => {
   useEffect(() => {
     props.getStaffListMethod();
+    props.getDepartmentListMethod();
+    props.getSalaryListMethod();
   }, []);
+  // ================================
+  // RETURN
+  // ================================
   return (
     <section className="container">
       <Routes>
@@ -47,13 +63,13 @@ const Main = (props) => {
         <Route
           exact
           path="/salary"
-          element={<Salary staffList={props.staffList} />}
+          element={<Salary salarysObject={props.salarysObject} />}
         />
         {/* Departments route*/}
         <Route
           exact
           path="/department"
-          element={<Departments departments={props.departments} />}
+          element={<Departments departmentsObject={props.departmentsObject} />}
         />
         {/* StaffDetail route*/}
         <Route
@@ -64,10 +80,12 @@ const Main = (props) => {
         <Route
           path="*"
           element={
-            <StaffList
-              staffModel={props.staffModel}
-              staffsObject={props.staffsObject}
-            />
+            // <StaffList
+            //   staffModel={props.staffModel}
+            //   staffsObject={props.staffsObject}
+            // />
+            // <Departments departmentsObject={props.departmentsObject} />
+            <Salary salarysObject={props.salarysObject} />
           }
         />
       </Routes>

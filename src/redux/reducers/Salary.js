@@ -1,21 +1,21 @@
 import { ACTION } from "../action";
 
-const initialState = { depmList: [], errorMessage: null, isLoading: false };
+const initialState = { salaryList: [], errorMessage: null, isLoading: false };
 
-export const DepartmentReducer = (state = initialState, action) => {
+export const SalaryReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ACTION.GET_DEPM_LIST:
-      state.depmList = action.payload;
+    case ACTION.GET_SALARY_LIST:
+      state.salaryList = action.payload;
       state.isLoading = false;
       state.errorMessage = null;
       return { ...state };
-    case ACTION.DEPM_LIST_LOADING:
+    case ACTION.SALARY_LIST_LOADING:
       state.isLoading = true;
-      state.depmList = [];
+      state.salaryList = [];
       state.errorMessage = null;
       return { ...state };
-    case ACTION.DEPM_LIST_FAILED:
-      state.depmList = [];
+    case ACTION.SALARY_LIST_FAILED:
+      state.salaryList = [];
       state.isLoading = false;
       state.errorMessage = action.payload;
       return { ...state };

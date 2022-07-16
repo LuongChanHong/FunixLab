@@ -11,64 +11,80 @@ import {
 
 import Header from "./Header";
 import Footer from "./Footer";
+import LoadingSpinner from "./LoadingSpinner";
 
 // RJS101x_asm4_honglcfx16049
-
-const basicSalary = 3000000;
-const overTimeSalary = 200000;
-
-// Tính lương tất cả nhân viên
-const calcuAllStaffSalary = (list) => {
-  list.forEach(
-    (staff) =>
-      (staff.salary = Math.round(
-        staff.salaryScale * basicSalary + staff.overTime * overTimeSalary
-      ))
-  );
-};
 
 // ======================================================================================
 // MAIN FUNCTION
 // ======================================================================================
 const Salary = (props) => {
-  const [sortedList, setSortedList] = useState(props.staffList);
+  const [salaryList, setSalaryList] = useState(props.salarysObject.salaryList);
 
-  calcuAllStaffSalary(props.staffList);
+  const propsObject = props.salarysObject;
 
-  const renderList = (list) => {
+  const TestingRenderList = (list) => {
     let _list = list.map((item) => item.salary / 10000);
     return _list;
   };
 
   // Sort staff list theo option truyền vào
   const sortSalaryByOption = (sortOption) => {
-    let list = [...sortedList];
+    let list = [...salaryList];
     if (sortOption == "maNV") {
       // Sort theo mã NV
       list = list.sort((firstItem, secondItem) => {
         return firstItem.id - secondItem.id;
       });
-      // console.log("list sort theo mã nv:", renderList(list));
+      console.log("list sort theo mã nv:", TestingRenderList(list));
     } else if (sortOption == "giamDan") {
       // Sort theo lương giảm dần (cao xuống thấp)
       list = list.sort((firstItem, secondItem) => {
         return secondItem.salary - firstItem.salary;
       });
-      // console.log("list sort lương giảm dần:", renderList(list));
+      console.log("list sort lương giảm dần:", TestingRenderList(list));
     } else if (sortOption == "tangDan") {
       // Sort theo lương tăng dần (thấp lên cao)
       list = list.sort((firstItem, secondItem) => {
         return firstItem.salary - secondItem.salary;
       });
-      // console.log("list sort lương tăng dần:", renderList(list));
+      console.log("list sort lương tăng dần:", TestingRenderList(list));
     }
-    setSortedList(list);
+
+    setSalaryList(list);
   };
+  // const sortSalaryByOption = (sortOption) => {
+  //   let list = [...salaryList];
+  //   if (sortOption == "maNV") {
+  //     // Sort theo mã NV
+  //     list = list.sort((firstItem, secondItem) => {
+  //       return firstItem.id - secondItem.id;
+  //     });
+  //     console.log("list sort theo mã nv:", TestingRenderList(list));
+  //   } else if (sortOption == "giamDan") {
+  //     // Sort theo lương giảm dần (cao xuống thấp)
+  //     list = list.sort((firstItem, secondItem) => {
+  //       return secondItem.salary - firstItem.salary;
+  //     });
+  //     console.log("list sort lương giảm dần:", TestingRenderList(list));
+  //   } else if (sortOption == "tangDan") {
+  //     // Sort theo lương tăng dần (thấp lên cao)
+  //     list = list.sort((firstItem, secondItem) => {
+  //       return firstItem.salary - secondItem.salary;
+  //     });
+  //     console.log("list sort lương tăng dần:", TestingRenderList(list));
+  //   }
+  //   setSalaryList(list);
+  // };
 
   // Xử lí khi input option thay đổi
   const handleChange = (event) => {
+    console.log("handleChange");
     // Sort staff list theo option truyền vào
     sortSalaryByOption(event.target.value);
+    if (salaryList.length == 0) {
+      setSalaryList(props.salarysObject.salaryList);
+    }
   };
 
   // Render sort option input
@@ -85,6 +101,65 @@ const Salary = (props) => {
     );
   };
 
+  // render list đã được sắp xếp
+  const renderSortedList = (list) => {
+    return list.map((staff) => (
+      <div key={staff.id} className="col-sm-12 col-md-6 col-lg-4 my-2">
+        <Card outline>
+          <CardHeader>
+            <h3 className="text-danger">{staff.name}</h3>
+          </CardHeader>
+          <CardBody>
+            <CardText className="m-0">Mã NV: {staff.id}</CardText>
+            <CardText className="m-0">Hệ số: {staff.salaryScale}</CardText>
+            <CardText className="m-0">
+              Ngày làm thêm: {staff.overTime} {"(ngày)"}
+            </CardText>
+          </CardBody>
+          <CardFooter>
+            Lương: {new Intl.NumberFormat().format(staff.salary)} vnđ
+          </CardFooter>
+        </Card>
+      </div>
+    ));
+  };
+
+  // Render kết quả fetch data từ server
+  const renderResponeFromServer = () => {
+    // setSalaryList(propsObject.salaryList);
+    console.log("component state list:", salaryList);
+    console.log("props list:", propsObject.salaryList);
+    if (propsObject.isLoading) {
+      return <LoadingSpinner />;
+    } else if (propsObject.errorMessage) {
+      return <h4 className="text-danger">{propsObject.errorMessage}</h4>;
+      // Trường hợp render list kết quả search
+    } else if (salaryList.length != 0) {
+      return <>{renderSortedList(salaryList)}</>;
+    } else {
+      return <>{renderSortedList(propsObject.salaryList)}</>;
+    }
+  };
+  // const renderResponeFromServer = () => {
+  //   // setSalaryList(propsObject.salaryList);
+  //   console.log("component state list:", salaryList);
+  //   console.log("props list:", propsObject.salaryList);
+  //   if (propsObject.isLoading) {
+  //     return <LoadingSpinner />;
+  //   } else if (propsObject.errorMessage) {
+  //     return <h4 className="text-danger">{propsObject.errorMessage}</h4>;
+  //     // Trường hợp render list kết quả search
+  //   } else if (salaryList.length != 0) {
+  //     return <>{renderSortedList(salaryList)}</>;
+  //   } else {
+  //     return <>{renderSortedList(propsObject.salaryList)}</>;
+  //   }
+  // };
+
+  // ================================
+  // RETURN
+  // ================================
+
   return (
     <section className="component_bg">
       <Header />
@@ -94,27 +169,7 @@ const Salary = (props) => {
         {renderInput()}
         <div className="row">
           {/* RENDER SALARY LIST */}
-          {sortedList.map((staff) => (
-            <div key={staff.id} className="col-sm-12 col-md-6 col-lg-4 my-2">
-              <Card outline>
-                <CardHeader>
-                  <h3 className="text-danger">{staff.name}</h3>
-                </CardHeader>
-                <CardBody>
-                  <CardText className="m-0">Mã NV: {staff.id}</CardText>
-                  <CardText className="m-0">
-                    Hệ số: {staff.salaryScale}
-                  </CardText>
-                  <CardText className="m-0">
-                    Ngày làm thêm: {staff.overTime} {"(ngày)"}
-                  </CardText>
-                </CardBody>
-                <CardFooter>
-                  Lương: {new Intl.NumberFormat().format(staff.salary)} vnđ
-                </CardFooter>
-              </Card>
-            </div>
-          ))}
+          {renderResponeFromServer()}
         </div>
       </div>
       <Footer />

@@ -14,3 +14,10 @@
 .breadcrumb_text {
   width: 10rem;
 }
+
+.department-item:hover {
+  transition: 0.5s;
+  background-color: seagreen;
+  color: whitesmoke;
+  cursor: pointer;
+}
