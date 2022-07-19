@@ -21,4 +21,9 @@
   color: whitesmoke;
   cursor: pointer;
 }
-/*  */
+
+.staff-delete-btn {
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+}

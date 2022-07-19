@@ -1,10 +1,9 @@
 import { URL } from "../database/baseUrls";
 
 export const apiOtherElement = (method, body) => {
-  console.log("body:", body);
   return {
     method,
-    body: JSON.stringify(body),
+    body: `${body ? JSON.stringify(body) : ""}`,
     headers: { "Content-Type": "application/json" },
     credentials: "same-origin",
   };

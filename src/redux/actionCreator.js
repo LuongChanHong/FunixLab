@@ -29,6 +29,9 @@ export const postStaff = (list) => ({
   payload: list,
 });
 
+// delete staff
+export const deleteStaff = (id) => ({ type: ACTION.DELETE_STAFF, payload: id });
+
 // ====================================================
 // DEPARTMENT ACTION ==================================
 // ====================================================
@@ -70,6 +73,8 @@ export const getSalaryList = (list) => ({
   type: ACTION.GET_SALARY_LIST,
   payload: list,
 });
+
+// ====================================================
 
 // Fetch data từ server theo string param truyền vào
 export const fetchData = (param) => (dispatch) => {
@@ -126,5 +131,24 @@ export const postData = (param, postData) => (dispatch) => {
     })
     .catch((error) => {
       dispatch(failedFunction(error.message));
+    });
+};
+
+// post data lên server theo string param
+export const deleteData = (param, deleteId) => (dispatch) => {
+  const postElement = apiOtherElement("DELETE");
+  let deleteDataFunction;
+
+  switch (param) {
+    case "staffs":
+      deleteDataFunction = (deleteId) => deleteStaff(deleteId);
+      break;
+  }
+  return fetchAPI(param + "/" + deleteId, postElement)
+    .then((response) => {
+      dispatch(deleteDataFunction(deleteId));
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };

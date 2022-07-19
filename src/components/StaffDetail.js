@@ -1,14 +1,28 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import dateFormat from "dateformat";
-import { Breadcrumb, BreadcrumbItem } from "reactstrap";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Row,
+} from "reactstrap";
 import { Link } from "react-router-dom";
 
 import Header from "./Header.js";
 import Footer from "./Footer.js";
-import { fetchAPI } from "../redux/fetchMethod";
+import { fetchAPI } from "../redux/fetchMethod.js";
+import { Response } from "cross-fetch";
+
+// ======================================================================================
+// MAIN FUNCTION
+// ======================================================================================
 
 function StaffDetail(props) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   let { id } = useParams();
   let renderStaff = props.staffList.find((item) => item.id == id);
   let renderDepartment = props.depmList.find(
@@ -49,6 +63,15 @@ function StaffDetail(props) {
   // console.log("staffFromProps:", staffFromProps);
   // console.log("depmFromProps:", depmFromProps);
 
+  // const deleteStaff = (id) => {
+  //   fetch("https://rjs101xbackend.herokuapp.com/staffs" + "/" + id, {
+  //     method: "DELETE",
+  //   }).then((response) => console.log("response:", response));
+  // };
+
+  // ================================
+  // RETURN
+  // ================================
   return (
     <div className="component_bg">
       <Header />
@@ -75,21 +98,49 @@ function StaffDetail(props) {
               <p>
                 Ngày sinh: {dateFormat(new Date(renderStaff.doB), "dd/mm/yyyy")}
               </p>
-              {/* <p>
+              <p>
                 Ngày vào công ty:{" "}
-                {dateFormat(Date(renderStaff.startDate), "dd/mm/yyyy")}
-              </p> */}
+                {dateFormat(new Date(renderStaff.startDate), "dd/mm/yyyy")}
+              </p>
               <p>
                 Phòng ban: <span>{renderDepartment.name}</span>
               </p>
               <p>Số ngày nghỉ còn lại: {renderStaff.annualLeave}</p>
               <p>Số ngày làm thêm: {renderStaff.overTime}</p>
+              <Button color="danger" onClick={() => setIsModalOpen(true)}>
+                Xóa nhân viên
+              </Button>
             </div>
           </div>
         </div>
       </div>
-
       <Footer />
+
+      {/* MODAL XÓA NHÂN VIÊN */}
+      <Modal isOpen={isModalOpen}>
+        <ModalBody>
+          <div className="d-flex justify-content-between">
+            <h4>Xóa {renderStaff.name}?</h4>
+            <button
+              className="staff-delete-btn"
+              onClick={() => setIsModalOpen(false)}
+            >
+              ❌
+            </button>
+          </div>
+          <div className="d-flex justify-content-center mt-3">
+            <Button size="lg" color="success">
+              <Link
+                to="/staff"
+                onClick={() => props.deleteDataMethod("staffs", renderStaff.id)}
+                className="text-decoration-none text-white"
+              >
+                Xóa
+              </Link>
+            </Button>
+          </div>
+        </ModalBody>
+      </Modal>
     </div>
   );
 }

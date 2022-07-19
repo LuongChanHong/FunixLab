@@ -9,7 +9,7 @@ import Salary from "./Salary";
 import StaffList from "./StaffList";
 import StaffDetail from "./StaffDetail";
 
-import { fetchData, postData } from "../redux/actionCreator";
+import { fetchData, postData, deleteData } from "../redux/actionCreator";
 
 const mapDispatchToProps = (dispatch) => ({
   getStaffListMethod: () => {
@@ -23,6 +23,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   postDataMethod: (param, data) => {
     dispatch(postData(param, data));
+  },
+  deleteDataMethod: (param, deleteId) => {
+    dispatch(deleteData(param, deleteId));
   },
 });
 
@@ -82,6 +85,7 @@ const Main = (props) => {
             <StaffDetail
               staffList={props.staffsObject.staffList}
               depmList={props.departmentsObject.depmList}
+              deleteDataMethod={props.deleteDataMethod}
             />
           }
         />
