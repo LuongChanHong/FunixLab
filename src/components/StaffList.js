@@ -56,14 +56,12 @@ const StaffList = (props) => {
   const [searchedList, setSearchedList] = useState(null);
   const [isSearchedList, setIsSearchedList] = useState(false);
 
-  const propsObject = props.staffsObject;
-
-  // useEffect(() => {
-  //   setStaffList(staffList);
-  // }, [staffList]);
+  const staffObject = props.staffsObject;
+  const depmList = props.depmList;
 
   // Render danh sách staff
   const renderStaffList = (list) => {
+    // console.log("list:", list);
     return list.map((staff) => (
       <div key={staff.id} className="col-sm-6 col-md-4 col-lg-2 my-1">
         <Card>
@@ -100,33 +98,37 @@ const StaffList = (props) => {
 
   // Thêm staff mới vào staffList
   const addNewStaff = (value) => {
-    // Thêm thuộc tính id và image
-    const id = Math.floor(Math.random() * 999) + 100;
+    // các thuộc tính sửa/ thêm vào object nv mới
+    // const id = Math.floor(Math.random() * 999) + 100;
+    const depm = depmList.find((demp) => demp.name === value.departmentId);
+    const salary = value.salaryScale * 300000 + value.overTime * 200000;
     const newStaff = {
       ...value,
+      departmentId: depm.id,
+      salary: salary,
       image: "/assets/images/alberto.png",
-      id: id,
-      doB: dateFormat(doB, "dd/mm/yyyy"),
-      startDate: dateFormat(startDate, "dd/mm/yyyy"),
+      // id: id,
+      doB: doB,
+      startDate: startDate,
     };
-    const list = [...staffList, newStaff];
-    setStaffList(list);
-
-    alert(JSON.stringify(newStaff));
+    props.postStaffMethod("staffs", newStaff);
+    // const list = [...staffList, newStaff];
+    // setStaffList(list);
+    // console.log("newStaff:", newStaff);
     toggleModal();
   };
 
   // Render kết quả fetch data từ server
   const renderResponeFromServer = () => {
-    if (propsObject.isLoading) {
+    if (staffObject.isLoading) {
       return <LoadingSpinner />;
-    } else if (propsObject.errorMessage) {
-      return <h4 className="text-danger">{propsObject.errorMessage}</h4>;
+    } else if (staffObject.errorMessage) {
+      return <h4 className="text-danger">{staffObject.errorMessage}</h4>;
       // Trường hợp render list kết quả search
     } else if (isSearchedList) {
       return <>{renderStaffList(searchedList)}</>;
     } else {
-      return <>{renderStaffList(propsObject.staffList)}</>;
+      return <>{renderStaffList(staffObject.staffList)}</>;
     }
   };
   // ================================
@@ -229,9 +231,9 @@ const StaffList = (props) => {
               </Label>
               <Col md={8}>
                 <Control.select
-                  model=".department"
+                  model=".departmentId"
                   id="depInput"
-                  name="department"
+                  name="departmentId"
                   className="form-control"
                   validators={{
                     isDepValid,
@@ -246,7 +248,7 @@ const StaffList = (props) => {
                 </Control.select>
                 <Errors
                   className="text-danger"
-                  model=".department"
+                  model=".departmentId"
                   show="touched"
                   messages={{
                     isDepValid: "Không hợp lệ",

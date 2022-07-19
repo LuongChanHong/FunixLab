@@ -1,6 +1,6 @@
 import { ACTION } from "./action";
 import { URL } from "../database/baseUrls";
-import { fetchAPI } from "./fetchMethod";
+import { fetchAPI, apiOtherElement } from "./fetchMethod";
 
 // ====================================================
 // STAFF ACTION =======================================
@@ -20,6 +20,12 @@ export const handleStaffListLoading = () => ({
 // truyền object chứa staff list vào staff reducer
 export const getStaffList = (list) => ({
   type: ACTION.GET_STAFF_LIST,
+  payload: list,
+});
+
+// post staff list mới từ api vào redux state
+export const postStaff = (list) => ({
+  type: ACTION.ADD_NEW_STAFF,
   payload: list,
 });
 
@@ -101,4 +107,24 @@ export const fetchData = (param) => (dispatch) => {
       dispatch(failedFunction(error.message));
     });
 };
-/*  */
+
+// post data lên server theo string param
+export const postData = (param, postData) => (dispatch) => {
+  const postElement = apiOtherElement("POST", postData);
+  let failedFunction;
+  let postDataFunction;
+
+  switch (param) {
+    case "staffs":
+      failedFunction = (data) => handleStaffListFailed(data);
+      postDataFunction = (data) => postStaff(data);
+      break;
+  }
+  return fetchAPI(param, postElement)
+    .then((staffList) => {
+      dispatch(postDataFunction(staffList));
+    })
+    .catch((error) => {
+      dispatch(failedFunction(error.message));
+    });
+};

@@ -1,7 +1,17 @@
 import { URL } from "../database/baseUrls";
 
-export const fetchAPI = (param) =>
-  fetch(URL.base + param)
+export const apiOtherElement = (method, body) => {
+  console.log("body:", body);
+  return {
+    method,
+    body: JSON.stringify(body),
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+  };
+};
+
+export const fetchAPI = (param, otherElement) =>
+  fetch(URL.base + param, otherElement)
     .then(
       (response) => {
         if (response.ok) {

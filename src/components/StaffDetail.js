@@ -72,11 +72,13 @@ function StaffDetail(props) {
             />
             <div className="col-sm-12 col-md-8 col-lg-9 p-3">
               <h3>Họ và tên: {renderStaff.name}</h3>
-              <p>Ngày sinh: {dateFormat(renderStaff.doB, "dd/mm/yyyy")}</p>
               <p>
-                Ngày vào công ty:{" "}
-                {dateFormat(renderStaff.startDate, "dd/mm/yyyy")}
+                Ngày sinh: {dateFormat(new Date(renderStaff.doB), "dd/mm/yyyy")}
               </p>
+              {/* <p>
+                Ngày vào công ty:{" "}
+                {dateFormat(Date(renderStaff.startDate), "dd/mm/yyyy")}
+              </p> */}
               <p>
                 Phòng ban: <span>{renderDepartment.name}</span>
               </p>
